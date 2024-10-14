@@ -18,6 +18,7 @@ import { libInjectCss as viteLibInjectCss } from 'vite-plugin-lib-inject-css';
 import { VitePWA } from 'vite-plugin-pwa';
 import viteVueDevTools from 'vite-plugin-vue-devtools';
 
+import { getBuildTime } from '../config/time';
 import { viteArchiverPlugin } from './archiver';
 import { viteExtraAppConfigPlugin } from './extra-app-config';
 import { viteImportMapPlugin } from './importmap';
@@ -194,7 +195,24 @@ async function loadApplicationPlugins(
     },
     {
       condition: !!html,
-      plugins: () => [viteHtmlPlugin({ minify: true })],
+      plugins: () => [
+        viteHtmlPlugin({
+          inject: {
+            tags: [
+              {
+                attrs: {
+                  name: 'buildtime',
+                  // eslint-disable-next-line perfectionist/sort-objects
+                  content: getBuildTime(),
+                },
+                tag: 'meta',
+                children: [''],
+              },
+            ],
+          },
+          minify: true,
+        }),
+      ],
     },
     {
       condition: isBuild && importmap,

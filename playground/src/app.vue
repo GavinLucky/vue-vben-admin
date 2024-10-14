@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import { useAntdDesignTokens } from '@vben/hooks';
 import { preferences, usePreferences } from '@vben/preferences';
@@ -27,6 +27,14 @@ const tokenTheme = computed(() => {
     algorithm,
     token: tokens,
   };
+});
+onMounted(() => {
+  // eslint-disable-next-line no-console
+  console.log('App mounted');
+  // eslint-disable-next-line no-console
+  console.log('App Version', __APP_VERSION__);
+  // eslint-disable-next-line no-console
+  console.log('App Build Time', __APP_BUILD_TIME__);
 });
 </script>
 
