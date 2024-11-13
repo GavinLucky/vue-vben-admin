@@ -1,0 +1,9 @@
+{
+  "pageTitle": "Risk assessment control system",
+  "pageDesc": "Please enter your account information to start managing your project",
+  "loginSubtitle": "Please enter your account information to start managing your project",
+  "graphValidateCodeTip": "Please enter the captcha",
+  "clickToUpdateGraphCode": "Click to update CAPTCHA",
+  "checkInputData": "Please check the input information",
+  "notSupportedLogin": "The login mode is not supported"
+}

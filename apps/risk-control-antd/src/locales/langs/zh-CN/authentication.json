@@ -1,0 +1,10 @@
+{
+  "pageTitle": "风险评估管控系统",
+  "pageDesc": "管理把控各种违规词汇图片等资源",
+  "loginSubtitle": "请输入您的帐户信息以开始管理您的项目",
+  "graphValidateCodeTip": "请输入图形验证码",
+  "clickToUpdateGraphCode": "点击更新图片验证码",
+  "checkInputData": "请检查输入信息",
+  "notSupportedLogin": "登录方式暂未支持"
+
+}
