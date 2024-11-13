@@ -10,7 +10,6 @@ import { message } from 'ant-design-vue';
 
 import { getAuthCodeApi } from '#/api/rg-modules/auth-api';
 import { useAuthStore } from '#/store';
-import { getRefCompFn } from '#/utils/components-utils';
 import { doEncrypt } from '#/utils/js-encrypt-utils';
 import GraphValidateCode from '#/views/_core/authentication/graph-validate-code.vue';
 
@@ -19,24 +18,26 @@ defineOptions({ name: 'Login' });
 const authStore = useAuthStore();
 
 const authLoginRef = ref<typeof AuthenticationLogin>();
-const graphValidateCodeRef = ref<typeof GraphValidateCode>();
+
+const codeUuidRef = ref('');
+const imgDataApi = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      const [err, resp] = await getAuthCodeApi();
+      if (err) {
+        console.error('captcha', err);
+        reject(err);
+      } else {
+        codeUuidRef.value = resp.uuid;
+        // console.log('captcha', resp.img);
+        resolve(resp.img);
+      }
+    });
+  });
+};
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
-    // {
-    //   component: 'VbenSelect',
-    //   componentProps: {
-    //     options: MOCK_USER_OPTIONS,
-    //     placeholder: $t('authentication.selectAccount'),
-    //   },
-    //   fieldName: 'selectAccount',
-    //   label: $t('authentication.selectAccount'),
-    //   rules: z
-    //     .string()
-    //     .min(1, { message: $t('authentication.selectAccount') })
-    //     .optional()
-    //     .default('vben'),
-    // },
     {
       component: 'AInput',
       componentProps: {
@@ -59,64 +60,19 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: 'Input',
       fieldName: 'code',
+      componentProps: {
+        api: imgDataApi,
+      },
       rules: z
         .string()
         .min(1, { message: $t('authentication.graphValidateCodeTip') }),
-      // .refine(
-      //   async (code) => {
-      //     // 假设这是一个异步函数，模拟检查用户名是否已存在
-      //     return new Promise((resolve) => {
-      //       setTimeout(() => {
-      //         resolve(code === '123456');
-      //       }, 1000);
-      //     });
-      //   },
-      //   {
-      //     message: 'code已存在',
-      //   },
-      // ),
     },
-    // {
-    //   component: markRaw(SliderCaptcha),
-    //   fieldName: 'captcha',
-    //   rules: z.boolean().refine((value) => value, {
-    //     message: $t('authentication.verifyRequiredTip'),
-    //   }),
-    // },
   ];
 });
 
-const codeUuidRef = ref('');
-const imgDataApi = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(async () => {
-      const [err, resp] = await getAuthCodeApi();
-      if (err) {
-        console.error('captcha', err);
-        reject(err);
-      } else {
-        codeUuidRef.value = resp.uuid;
-        // console.log('captcha', resp.img);
-        resolve(resp.img);
-      }
-    });
-  });
-};
-const graphValidateCodeInputOnBlurFn = () => {
-  getFormComp()?.getFormApi()?.validate();
-};
-// #region getComponent
-// =================================================
-function getFormComp() {
-  return getRefCompFn(authLoginRef);
-}
-function getGraphValidateCodeComp() {
-  return getRefCompFn(graphValidateCodeRef);
-}
-// #endregion  -------------------------------------
 // #region submit
 // =================================================
-const submitBtnClickFn = async ([error, values]) => {
+const submitBtnClickFn = async ([error, values]: any) => {
   if (error) {
     console.error('validate error', error);
     message.error($t('authentication.checkInputData'), 5);
@@ -127,31 +83,20 @@ const submitBtnClickFn = async ([error, values]) => {
     // 账密登录
     const params: RgApi.Auth.IAuthLoginReq = {
       username: values.username,
-      password: doEncrypt(values.password),
+      password: `${doEncrypt(values.password)}`,
       code: values.code,
       uuid: codeUuidRef.value,
     };
-    authStore.authLogin(params);
+    await authStore.authLogin(params);
   } else {
     message.warn($t('authentication.notSupportedLogin'), 5);
   }
-  // message.error('This is an error message');
-  // return;
-  // try {
-  //   const validateResp = await getFormComp()?.getFormApi()?.validate();
-  // } catch (error) {
-  //   console.error('validate error', error);
-  //   message.error('请检查输入信息', 5);
-  //   return;
-  // }
-  // console.log('submitBtnClickFn', getFormComp()?.getFormApi().getValues());
-  // authLoginRef.value?.submit();
 };
 // #endregion  -------------------------------------
 onMounted(() => {
   // console.log('Login onMounted');
   setTimeout(() => {
-    getGraphValidateCodeComp()?.loadImgFn();
+    // getGraphValidateCodeComp()?.loadImgFn();
   }, 100);
 });
 </script>
@@ -164,15 +109,18 @@ onMounted(() => {
     :show-third-party-login="false"
     @submit="submitBtnClickFn"
   >
-    <template #code="slotProps">
+    <template
+      #code="{ api, isInValid, value, handleBlur, handleChange, setValue }"
+    >
       <div class="w-full">
-        <!--        {{ console.log('slotProps', slotProps) }}-->
         <GraphValidateCode
-          :prop-validate-failed="slotProps.isInValid"
-          v-bind="slotProps"
-          ref="graphValidateCodeRef"
-          :prop-api="imgDataApi"
-          @on-emit-on-blur="graphValidateCodeInputOnBlurFn"
+          :prop-api="api"
+          :prop-validate-failed="isInValid"
+          :value="value"
+          @on-emit-on-blur="handleBlur()"
+          @on-emit-on-change="handleChange($event)"
+          @on-emit-on-focus="() => {}"
+          @update:value="(nV) => setValue(nV)"
         />
       </div>
     </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
-import { $t } from '@vben/locales';
+import { Input, Spin, Tooltip } from 'ant-design-vue';
 
 /** 图形验证码 */
 
@@ -9,13 +9,17 @@ defineOptions({
   name: 'GraphValidateCode',
 });
 interface IGraphValidateCodeProps {
+  /** 获取图片Api接口 */
   propApi?: () => Promise<string>;
+  /** 校验失败状态 */
   propValidateFailed: boolean;
 }
 // eslint-disable-next-line vue/define-macros-order
 const props = defineProps<IGraphValidateCodeProps>();
 const emit = defineEmits<{
   (e: 'onEmitOnBlur'): void;
+  (e: 'onEmitOnChange', event: Event): void;
+  (e: 'onEmitOnFocus'): void;
 }>();
 
 const validateFailedComputed = computed(() => {
@@ -23,7 +27,7 @@ const validateFailedComputed = computed(() => {
 });
 
 const imgLoadingStateRef = ref(false);
-const inputValue = defineModel('value');
+const inputValue = defineModel<string>('value');
 const imgDataRef = ref();
 const loadImgDataApiFn = () => {
   return new Promise((resolve, reject) => {
@@ -58,8 +62,19 @@ const handleBlur = () => {
 };
 const handleFocus = () => {
   // console.log('handleFocus');
+  emit('onEmitOnFocus');
   // 光标聚焦
 };
+const handleChange = (e: Event) => {
+  // console.log('handleChange', e);
+  emit('onEmitOnChange', e);
+  // 输入框内容改变
+};
+onMounted(() => {
+  setTimeout(() => {
+    loadImgDataApiFn();
+  }, 100);
+});
 defineExpose({
   loadImgFn: () => {
     return loadImgDataApiFn();
@@ -72,22 +87,23 @@ defineExpose({
     class="graph-validate-code-cls flex w-full flex-row items-center justify-between"
   >
     <div class="mr-[2px] w-1/2 flex-1">
-      <a-input
+      <Input
         v-model:value="inputValue"
         :class="[
           validateFailedComputed ? 'border-destructive' : 'border-light',
         ]"
-        :placeholder="$t('authentication.graphValidateCodeTip')"
+        placeholder="请输入验证码"
         @blur="handleBlur"
+        @change="handleChange"
         @focus="handleFocus"
       />
     </div>
 
     <div class="w-1/2 flex-1">
-      <a-spin :spinning="imgLoadingStateRef" size="small">
-        <a-tooltip placement="top">
+      <Spin :spinning="imgLoadingStateRef" size="small">
+        <Tooltip placement="top">
           <template #title>
-            <span>{{ $t('authentication.clickToUpdateGraphCode') }}</span>
+            <span>点击更新验证码</span>
           </template>
 
           <div
@@ -104,16 +120,10 @@ defineExpose({
               class="mx-auto h-full object-contain"
             />
           </div>
-        </a-tooltip>
-      </a-spin>
+        </Tooltip>
+      </Spin>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-.graph-validate-code-cls {
-  .border-destructive {
-    border-color: #ff3860;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
