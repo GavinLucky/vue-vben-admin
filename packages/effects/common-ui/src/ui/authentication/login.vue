@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
-import type { VbenFormSchema } from '@vben-core/form-ui';
+import type { FormValidationResult, VbenFormSchema } from '@vben-core/form-ui';
 
 import type { AuthenticationProps } from './types';
 
@@ -41,7 +41,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  submit: [Recordable<any>];
+  (
+    e: 'submit',
+    returnValue:
+      | [FormValidationResult<any, any>, undefined]
+      | [undefined, Recordable<any>],
+  ): void;
 }>();
 
 const [Form, formApi] = useVbenForm(
@@ -63,14 +68,16 @@ const localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
 const rememberMe = ref(!!localUsername);
 
 async function handleSubmit() {
-  const { valid } = await formApi.validate();
-  const values = await formApi.getValues();
-  if (valid) {
+  const validateRes = await formApi.validate();
+  if (validateRes.valid) {
+    const values = await formApi.getValues();
     localStorage.setItem(
       REMEMBER_ME_KEY,
       rememberMe.value ? values?.username : '',
     );
-    emit('submit', values);
+    emit('submit', [undefined, values]);
+  } else {
+    emit('submit', [validateRes, undefined]);
   }
 }
 
@@ -106,7 +113,16 @@ defineExpose({
       </Title>
     </slot>
 
-    <Form />
+    <Form>
+      <!--      <slot v-for="slotName in Object.keys($slots)" :key="slotName" :name="slotName"></slot>-->
+      <template
+        v-for="slotName in Object.keys($slots)"
+        :key="slotName"
+        #[slotName]="slotProps"
+      >
+        <slot :name="slotName" v-bind="slotProps"></slot>
+      </template>
+    </Form>
 
     <div
       v-if="showRememberMe || showForgetPassword"

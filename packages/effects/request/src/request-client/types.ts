@@ -44,6 +44,7 @@ interface HttpResponse<T = any> {
 
 export type {
   HttpResponse,
+  InternalAxiosRequestConfig,
   MakeErrorMessageFn,
   RequestClientOptions,
   RequestContentType,
