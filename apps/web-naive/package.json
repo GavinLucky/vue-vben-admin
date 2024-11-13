@@ -1,18 +1,13 @@
 {
   "name": "@vben/web-naive",
   "version": "5.4.6",
-  "homepage": "https://vben.pro",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
-    "directory": "apps/web-naive"
-  },
-  "license": "MIT",
+  "homepage": "",
+  "bugs": "",
+  "license": "",
   "author": {
-    "name": "vben",
-    "email": "ann.vben@gmail.com",
-    "url": "https://github.com/anncwb"
+    "name": "",
+    "email": "",
+    "url": ""
   },
   "type": "module",
   "scripts": {

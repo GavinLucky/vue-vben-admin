@@ -5,7 +5,7 @@
       "path": "apps/backend-mock",
     },
     {
-      "name": "@vben/risk-control-antd",
+      "name": "@rg/risk-control-antd",
       "path": "apps/risk-control-antd",
     },
     {
