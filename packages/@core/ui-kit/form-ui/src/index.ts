@@ -4,6 +4,7 @@ export type {
   BaseFormComponentType,
   ExtendedFormApi,
   FormSchema as VbenFormSchema,
+  FormValidationResult,
   VbenFormProps,
 } from './types';
 

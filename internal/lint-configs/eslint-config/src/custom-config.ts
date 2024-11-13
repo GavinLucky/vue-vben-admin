@@ -33,6 +33,7 @@ const customConfig: Linter.Config[] = [
     files: ['apps/**/**'],
     ignores: restrictedImportIgnores,
     rules: {
+      'no-console': 'warn',
       'no-restricted-imports': [
         'error',
         {

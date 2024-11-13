@@ -1,13 +1,14 @@
 import type { PluginOption } from 'vite';
 
 import {
-  dateUtil,
   findMonorepoRoot,
   getPackages,
   readPackageJSON,
 } from '@vben/node-utils';
 
 import { readWorkspaceManifest } from '@pnpm/workspace.read-manifest';
+
+import { getBuildTime } from '../config/time';
 
 function resolvePackageVersion(
   pkgsMeta: Record<string, string>,
@@ -73,7 +74,7 @@ async function viteMetadataPlugin(
   const { author, description, homepage, license, version } =
     await readPackageJSON(root);
 
-  const buildTime = dateUtil().format('YYYY-MM-DD HH:mm:ss');
+  const buildTime = getBuildTime();
 
   return {
     async config() {
@@ -87,6 +88,8 @@ async function viteMetadataPlugin(
 
       return {
         define: {
+          __APP_BUILD_TIME__: JSON.stringify(buildTime),
+          __APP_VERSION__: JSON.stringify(version),
           __VBEN_ADMIN_METADATA__: JSON.stringify({
             authorEmail,
             authorName,
@@ -99,7 +102,9 @@ async function viteMetadataPlugin(
             license,
             version,
           }),
-          'import.meta.env.VITE_APP_VERSION': JSON.stringify(version),
+          // 'import.meta.env.VITE_APP_VERSION': JSON.stringify(version),
+          'import.meta.env.VITE_GLOB_APP_BUILD_TIME': JSON.stringify(buildTime),
+          'import.meta.env.VITE_GLOB_APP_VERSION': JSON.stringify(version),
         },
       };
     },

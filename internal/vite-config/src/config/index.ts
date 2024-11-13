@@ -5,6 +5,7 @@ import { join } from 'node:path';
 
 import { defineApplicationConfig } from './application';
 import { defineLibraryConfig } from './library';
+import { resetBuildTime } from './time';
 
 export * from './application';
 export * from './library';
@@ -23,6 +24,8 @@ function defineConfig(
 
   switch (projectType) {
     case 'application': {
+      // 判断是应用打包，则先重置buildTime
+      resetBuildTime();
       return defineApplicationConfig(userConfigPromise);
     }
     case 'library': {
