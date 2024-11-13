@@ -28,4 +28,8 @@ export const overridesPreferences = defineOverridesPreferences({
     icp: '',
     icpLink: '',
   },
+  logo: {
+    enable: true,
+    source: '/logo.png',
+  },
 });
