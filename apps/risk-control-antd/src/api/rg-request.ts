@@ -73,7 +73,7 @@ function createRequestClient(baseURL: string) {
       const accessStore = useAccessStore();
       const { ignoreAddHeader = false }: ICustomOptions =
         config?.customOptions || {};
-      if (ignoreAddHeader) {
+      if (!ignoreAddHeader) {
         config.headers.Authorization = formatToken(accessStore.accessToken);
         config.headers['Accept-Language'] = preferences.app.locale;
       }

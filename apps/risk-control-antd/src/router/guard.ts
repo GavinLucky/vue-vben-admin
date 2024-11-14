@@ -87,8 +87,14 @@ function setupAccessGuard(router: Router) {
 
     // 生成路由表
     // 当前登录用户拥有的角色标识列表
-    const userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
-    const userRoles = userInfo.roles ?? [];
+    const userInfo: RgApi.User.IUserInfo | undefined =
+      (userStore.userInfo as any) || (await authStore.fetchUserInfo());
+    // TODO:  role临时改动
+    const userRoles =
+      userInfo?.roles.map((ele) => {
+        return `${ele.id}`;
+      }) ?? [];
+    // const userRoles = userInfo.roles ?? [];
 
     // 生成菜单和路由
     const { accessibleMenus, accessibleRoutes } = await generateAccess({

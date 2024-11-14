@@ -12,3 +12,7 @@ export function authLoginWithPsdApi(
 ): Promise<[any, any]> {
   return doRequestFn('post', '/auth/login', params) as any;
 }
+
+export function getLoginUserInfoApi() {
+  return doRequestFn('get', '/auth/info', undefined, undefined) as any;
+}

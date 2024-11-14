@@ -1,4 +1,4 @@
-import type { Recordable, UserInfo } from '@vben/types';
+import type { Recordable } from '@vben/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -9,8 +9,11 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getUserInfoApi, logoutApi } from '#/api';
-import { authLoginWithPsdApi } from '#/api/rg-modules/auth-api';
+import { logoutApi } from '#/api';
+import {
+  authLoginWithPsdApi,
+  getLoginUserInfoApi,
+} from '#/api/rg-modules/auth-api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -30,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | UserInfo = null;
+    let userInfo: null | RgApi.User.IUserInfo = null;
     try {
       loginLoading.value = true;
       const [loginErr, { token: accessToken, user }] =
@@ -43,7 +46,8 @@ export const useAuthStore = defineStore('auth', () => {
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
-        userInfo = user.user;
+        userInfo = await fetchUserInfo(user);
+        // userInfo = user.user;
         // // 获取用户信息并存储到 accessStore 中
         // const [fetchUserInfoResult, accessCodes] = await Promise.all([
         //   fetchUserInfo(),
@@ -52,7 +56,6 @@ export const useAuthStore = defineStore('auth', () => {
 
         // userInfo = fetchUserInfoResult;
 
-        userStore.setUserInfo(userInfo);
         accessStore.setAccessCodes([]);
 
         if (accessStore.loginExpired) {
@@ -100,11 +103,26 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
-  async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
-    userStore.setUserInfo(userInfo);
-    return userInfo;
+  async function fetchUserInfo(vUserinfo?: RgApi.Auth.ILoginUserInfoResp) {
+    const userInfo: null | RgApi.User.IUserInfo = null;
+    if (vUserinfo) {
+      const { user } = vUserinfo;
+      if (user) {
+        userStore.setUserInfo(user as any);
+        return userInfo;
+      }
+    }
+    const [err, resp] = await getLoginUserInfoApi();
+    if (err) {
+      return null;
+    } else {
+      const { user } = resp;
+      userStore.setUserInfo(user as any);
+      return userInfo;
+    }
+    // userInfo = await getUserInfoApi();
+    // userStore.setUserInfo(userInfo);
+    // return userInfo;
   }
 
   function $reset() {
