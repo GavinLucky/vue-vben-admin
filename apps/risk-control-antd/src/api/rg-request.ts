@@ -86,7 +86,7 @@ function createRequestClient(baseURL: string) {
     fulfilled: (response) => {
       const { data: responseData, status } = response;
       const { code = undefined, data } = responseData;
-      if (status >= 200 && status < 400 && (code === 0 || code === undefined)) {
+      if (status >= 200 && status < 400 && code === 200) {
         // 兼容返回的数据结构
         return data || responseData;
       }

@@ -28,6 +28,7 @@ export {
   Fullscreen,
   Github,
   Grip,
+  Image,
   Info,
   InspectionPanel,
   Languages,

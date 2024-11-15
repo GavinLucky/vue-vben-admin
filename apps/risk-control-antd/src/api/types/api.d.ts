@@ -1,5 +1,14 @@
 declare namespace RgApi {
-  namespace Base {}
+  namespace Base {
+    type ServerDataType<T> = {
+      code: number;
+      data: null | T;
+      msg: string;
+    };
+    type TupleResp<T = any, E extends Error | ServerDataType = any> =
+      | [E, undefined]
+      | [undefined, T];
+  }
   namespace Common {
     interface IRole {
       dataScope: string;
@@ -19,6 +28,11 @@ declare namespace RgApi {
     }
   }
   namespace Auth {
+    interface IAuthCodeResp {
+      captchaEnabled: boolean;
+      uuid: string;
+      img: string;
+    }
     interface IAuthLoginReq {
       code: string;
       password: string;

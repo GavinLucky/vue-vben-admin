@@ -10,8 +10,8 @@ import { message } from 'ant-design-vue';
 
 import { getAuthCodeApi } from '#/api/rg-modules/auth-api';
 import { useAuthStore } from '#/store';
-import { doEncrypt } from '#/utils/js-encrypt-utils';
-import GraphValidateCode from '#/views/_core/authentication/graph-validate-code.vue';
+
+import GraphValidateCode from './graph-validate-code.vue';
 
 defineOptions({ name: 'Login' });
 
@@ -19,19 +19,35 @@ const authStore = useAuthStore();
 
 const authLoginRef = ref<typeof AuthenticationLogin>();
 
-const codeUuidRef = ref('');
+const captchaDataRef = ref<RgApi.Auth.IAuthCodeResp | undefined>(undefined);
+
+const loadServerCaptchaFn = async () => {
+  const [err, resp] = await getAuthCodeApi();
+  if (err) {
+    message.error(err.msg || '获取验证码失败，请刷新网页重试');
+    console.error(err);
+    if (captchaDataRef.value.img) {
+      captchaDataRef.value = { ...captchaDataRef.value, img: '' };
+    }
+    return false;
+  } else {
+    captchaDataRef.value = { ...resp };
+    return true;
+  }
+};
 const imgDataApi = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(async () => {
-      const [err, resp] = await getAuthCodeApi();
-      if (err) {
-        console.error('captcha', err);
-        reject(err);
-      } else {
-        codeUuidRef.value = resp.uuid;
-        // console.log('captcha', resp.img);
-        resolve(resp.img);
-      }
+      const status = await loadServerCaptchaFn();
+      resolve(status);
+      // if (err) {
+      //   console.error('captcha', err);
+      //   reject(err);
+      // } else {
+      //   codeUuidRef.value = resp.uuid;
+      //   // console.log('captcha', resp.img);
+      //   resolve(resp.img);
+      // }
     });
   });
 };
@@ -61,7 +77,12 @@ const formSchema = computed((): VbenFormSchema[] => {
       component: 'Input',
       fieldName: 'code',
       componentProps: {
-        api: imgDataApi,
+        propApi: imgDataApi,
+        propCaptcha: captchaDataRef.value?.img,
+      },
+      dependencies: {
+        if: () => captchaDataRef.value?.captchaEnabled,
+        triggerFields: [''],
       },
       rules: z
         .string()
@@ -83,9 +104,9 @@ const submitBtnClickFn = async ([error, values]: any) => {
     // 账密登录
     const params: RgApi.Auth.IAuthLoginReq = {
       username: values.username,
-      password: `${doEncrypt(values.password)}`,
+      password: values.password,
       code: values.code,
-      uuid: codeUuidRef.value,
+      uuid: captchaDataRef.value?.uuid,
     };
     await authStore.authLogin(params);
   } else {
@@ -95,8 +116,8 @@ const submitBtnClickFn = async ([error, values]: any) => {
 // #endregion  -------------------------------------
 onMounted(() => {
   // console.log('Login onMounted');
-  setTimeout(() => {
-    // getGraphValidateCodeComp()?.loadImgFn();
+  setTimeout(async () => {
+    await loadServerCaptchaFn();
   }, 100);
 });
 </script>
@@ -110,11 +131,12 @@ onMounted(() => {
     @submit="submitBtnClickFn"
   >
     <template
-      #code="{ api, isInValid, value, handleBlur, handleChange, setValue }"
+      #code="{ propApi, isInValid, value, handleBlur, handleChange, setValue }"
     >
       <div class="w-full">
         <GraphValidateCode
-          :prop-api="api"
+          :prop-api="propApi"
+          :prop-captcha="captchaDataRef?.img"
           :prop-validate-failed="isInValid"
           :value="value"
           @on-emit-on-blur="handleBlur()"

@@ -4,47 +4,54 @@ import { stringify } from 'qs';
 
 import { rgReqClient } from '#/api/rg-request';
 
-export function doRequestFn(
+export function doRequestFn<T>(
   type: 'get' | 'post',
   uriPath: string,
   data: object | undefined = undefined,
   options: ICustomOptions = {},
 ) {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      let [error, resp] = [undefined, undefined];
-      if (type === 'get') {
-        try {
-          let urlPathWithQuery = uriPath;
-          if (data) {
-            const query = stringify(data);
-            if (query) {
-              urlPathWithQuery = `${uriPath}?${query}`;
+  return new Promise<RgApi.Base.TupleResp<T, RgApi.Base.ServerDataType<any>>>(
+    (resolve) => {
+      setTimeout(async () => {
+        let [error, resp]:
+          | [undefined, undefined]
+          | RgApi.Base.tupleResp<T, Error> = [undefined, undefined];
+        if (type === 'get') {
+          try {
+            let urlPathWithQuery = uriPath;
+            if (data) {
+              const query = stringify(data);
+              if (query) {
+                urlPathWithQuery = `${uriPath}?${query}`;
+              }
             }
+            const getRes: T | undefined = await rgReqClient.get<T>(
+              urlPathWithQuery,
+              {
+                customOptions: options,
+              } as any,
+            );
+            resp = getRes;
+            resolve([error, resp] as [undefined, T]);
+          } catch (error_) {
+            console.error(error_);
+            error = error_ as RgApi.Base.TupleResp;
+            resolve([error, resp] as [RgApi.Base.TupleResp, undefined]);
           }
-          const getRes = await rgReqClient.get(urlPathWithQuery, {
-            customOptions: options,
-          } as any);
-          resp = getRes;
-        } catch (error_) {
-          console.error(error_);
-          error = error_;
-        } finally {
-          resolve([error, resp]);
+        } else {
+          try {
+            const postRes = await rgReqClient.post<T>(uriPath, data, {
+              customOptions: options,
+            } as any);
+            resp = postRes;
+            resolve([error, resp] as [undefined, T]);
+          } catch (error_) {
+            console.error(error_);
+            error = error_ as RgApi.Base.TupleResp;
+            resolve([error, resp] as [RgApi.Base.TupleResp, undefined]);
+          }
         }
-      } else {
-        try {
-          const postRes = await rgReqClient.post(uriPath, data, {
-            customOptions: options,
-          } as any);
-          resp = postRes;
-        } catch (error_) {
-          console.error(error_);
-          error = error_;
-        } finally {
-          resolve([error, resp]);
-        }
-      }
-    });
-  });
+      });
+    },
+  );
 }
