@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { Image } from '@vben/icons';
 
@@ -82,16 +82,6 @@ const handleChange = (e: Event) => {
   emit('onEmitOnChange', e);
   // 输入框内容改变
 };
-onMounted(() => {
-  setTimeout(() => {
-    loadImgDataApiFn();
-  }, 100);
-});
-defineExpose({
-  loadImgFn: () => {
-    return loadImgDataApiFn();
-  },
-});
 </script>
 
 <template>
