@@ -4,6 +4,7 @@
 
 import type { HttpResponse, InternalAxiosRequestConfig } from '@vben/request';
 
+import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
 import {
   authenticateResponseInterceptor,
@@ -15,20 +16,32 @@ import { useAccessStore } from '@vben/stores';
 import { message } from 'ant-design-vue';
 
 import { useAuthStore } from '#/store';
+import {
+  encryptBase64,
+  encryptWithAes,
+  generateAesKey,
+} from '#/utils/crypto-js-utils';
+import { doEncrypt } from '#/utils/js-encrypt-utils';
 
 import { refreshTokenApi } from './core';
 
 interface ICustomOptions {
   /** 忽略请求是添加headers */
   ignoreAddHeader?: boolean;
+  /** 请求开启加密 */
+  encrypt?: boolean;
 }
 interface InternalAxiosRequestConfigWithCustomOptions
   extends InternalAxiosRequestConfig<any> {
   customOptions?: ICustomOptions;
 }
-
+const {
+  rgApiUrl: rgUrl,
+  clientId,
+  enableEncrypt,
+} = useAppConfig(import.meta.env, import.meta.env.PROD);
 // const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
-const rgUrl = import.meta.env.VITE_GLOB_API_RG_URL;
+// const rgUrl = import.meta.env.VITE_GLOB_API_RG_URL;
 function createRequestClient(baseURL: string) {
   const client = new RequestClient({
     baseURL,
@@ -71,11 +84,31 @@ function createRequestClient(baseURL: string) {
   client.addRequestInterceptor({
     fulfilled: async (config: InternalAxiosRequestConfigWithCustomOptions) => {
       const accessStore = useAccessStore();
-      const { ignoreAddHeader = false }: ICustomOptions =
+      const { ignoreAddHeader = false, encrypt = false }: ICustomOptions =
         config?.customOptions || {};
+      // 添加全局clientId
+      config.headers.clientId = clientId;
       if (!ignoreAddHeader) {
         config.headers.Authorization = formatToken(accessStore.accessToken);
-        config.headers['Accept-Language'] = preferences.app.locale;
+        config.headers['Accept-Language'] = preferences.app.locale?.replace(
+          '-',
+          '_',
+        );
+      }
+
+      // 全局加密
+      if (
+        enableEncrypt &&
+        encrypt &&
+        ['get', 'post'].includes(config.method?.toLowerCase() || '')
+      ) {
+        const aesKey = generateAesKey();
+        config.headers['encrypt-key'] = doEncrypt(encryptBase64(aesKey));
+        console.log('url path:', config.url, 'data', config.data);
+        config.data =
+          typeof config.data === 'object'
+            ? encryptWithAes(JSON.stringify(config.data), aesKey)
+            : encryptWithAes(config.data, aesKey);
       }
       return config;
     },

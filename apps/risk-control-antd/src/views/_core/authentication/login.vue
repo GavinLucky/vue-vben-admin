@@ -106,7 +106,8 @@ const submitBtnClickFn = async ([error, values]: any) => {
       username: values.username,
       password: values.password,
       code: values.code,
-      uuid: captchaDataRef.value?.uuid,
+      uuid: captchaDataRef.value?.uuid || '',
+      grantType: 'password',
     };
     await authStore.authLogin(params);
   } else {

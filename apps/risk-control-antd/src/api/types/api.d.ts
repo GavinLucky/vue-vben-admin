@@ -10,6 +10,15 @@ declare namespace RgApi {
       | [undefined, T];
   }
   namespace Common {
+    /**
+     * 登录类型
+     * password 密码
+     * sms 短信
+     * social 第三方oauth
+     * email 邮箱
+     * xcx 小程序
+     */
+    type LoginGrantType = 'email' | 'password' | 'sms' | 'social' | 'xcx';
     interface IRole {
       dataScope: string;
       id: number;
@@ -36,8 +45,11 @@ declare namespace RgApi {
     interface IAuthLoginReq {
       code: string;
       password: string;
+      grantType: Common.LoginGrantType;
       username: string;
       uuid: string;
+      tenantId?: string;
+      clientId?: string;
     }
 
     interface ILoginUserInfoResp {

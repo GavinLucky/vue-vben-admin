@@ -17,8 +17,7 @@ export default defineConfig(async () => {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/rg_api/, ''),
             // mock代理目标地址
-            target: 'http://lw-antaihong.rivergame.net:8080',
-            // target:'https://eladmin.vip'
+            target: 'http://lw-local-ugc-gm.rivergame.net:8080',
             ws: true,
           },
         },
