@@ -21,9 +21,13 @@ declare namespace RgApi {
     type LoginGrantType = 'email' | 'password' | 'sms' | 'social' | 'xcx';
     interface IRole {
       dataScope: string;
-      id: number;
-      level: number;
-      name: string;
+      flag: boolean;
+      roleId: number;
+      roleKey: string;
+      roleName: string;
+      roleSort: number;
+      status: string;
+      superAdmin: boolean;
     }
 
     interface IDept {
@@ -51,34 +55,40 @@ declare namespace RgApi {
       tenantId?: string;
       clientId?: string;
     }
-
+    interface IAuthLoginResp {
+      scope: null | string;
+      openid: null | string;
+      access_token: string;
+      refresh_token: null | string;
+      expire_in: string;
+      refresh_expire_in: null;
+      client_id: string;
+    }
     interface ILoginUserInfoResp {
-      authorities: Authority[];
-      dataScopes: DataScope[]; // 这里是一个空数组，所以类型是空接口数组
+      permissions: string[]; // 这里是一个空数组，所以类型是空接口数组
       roles: string[];
       user: RgApi.User.IUserInfo;
     }
   }
   namespace User {
     interface IUserInfo {
-      avatarName?: string;
-      avatarPath?: string;
+      avatar: string;
       createTime: string;
-      dept: Common.IDept;
+      deptId: number;
+      deptName: string;
       email: string;
-      enabled: boolean;
-      gender: string;
-      id: number;
-      isAdmin: boolean;
-      jobs: Common.IJob[];
+      loginDate: string;
+      loginIp: string;
       nickName: string;
-      password: string;
-      phone: string;
-      pwdResetTime: string;
+      phonenumber: string;
+      remark: string;
       roles: Common.IRole[];
-      updateBy: string;
-      updateTime: string;
-      username: string;
+      sex: string;
+      status: string;
+      tenantId: string;
+      userId: number;
+      userName: string;
+      userType: string;
     }
   }
 }

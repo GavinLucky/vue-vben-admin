@@ -16,9 +16,16 @@ export function authLoginWithPsdApi(
 ): Promise<[any, any]> {
   params.tenantId = '000000';
   params.clientId = clientId;
-  return doRequestFn('post', '/auth/login', params, { encrypt: true });
+  return doRequestFn<RgApi.Auth.IAuthLoginResp>('post', '/auth/login', params, {
+    encrypt: true,
+  });
 }
 
 export function getLoginUserInfoApi() {
-  return doRequestFn('get', '/auth/info', undefined, undefined) as any;
+  return doRequestFn<RgApi.Auth.ILoginUserInfoResp>(
+    'get',
+    '/system/user/getInfo',
+    undefined,
+    undefined,
+  );
 }

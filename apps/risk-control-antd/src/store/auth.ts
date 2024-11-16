@@ -1,4 +1,4 @@
-import type { Recordable } from '@vben/types';
+import type { Recordable, UserInfo } from '@vben/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -33,10 +33,10 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | RgApi.User.IUserInfo = null;
+    let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const [loginErr, { token: accessToken, user }] =
+      const [loginErr, { access_token: accessToken }] =
         await authLoginWithPsdApi(params as RgApi.Auth.IAuthLoginReq);
       // debugger;
       if (loginErr) {
@@ -46,7 +46,16 @@ export const useAuthStore = defineStore('auth', () => {
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
-        userInfo = await fetchUserInfo(user);
+
+        userInfo = await fetchUserInfo();
+        /**
+         * 设置用户信息
+         */
+        userStore.setUserInfo(userInfo);
+        /**
+         * 在这里设置权限
+         */
+        accessStore.setAccessCodes(userInfo.permissions);
         // userInfo = user.user;
         // // 获取用户信息并存储到 accessStore 中
         // const [fetchUserInfoResult, accessCodes] = await Promise.all([
@@ -56,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         // userInfo = fetchUserInfoResult;
 
-        accessStore.setAccessCodes([]);
+        // accessStore.setAccessCodes([]);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -66,9 +75,9 @@ export const useAuthStore = defineStore('auth', () => {
             : await router.push(userInfo?.homePath || DEFAULT_HOME_PATH);
         }
 
-        if (userInfo?.nickName) {
+        if (userInfo?.realName) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickName}`,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
             duration: 3,
             message: $t('authentication.loginSuccess'),
           });
@@ -112,12 +121,23 @@ export const useAuthStore = defineStore('auth', () => {
         return userInfo;
       }
     }
-    const [err, resp] = await getLoginUserInfoApi();
+    const [err, backUserInfoResp] = await getLoginUserInfoApi();
     if (err) {
       return null;
     } else {
-      const { user } = resp;
-      userStore.setUserInfo(user as any);
+      const { permissions = [], roles = [], user } = backUserInfoResp;
+      /**
+       * 从后台user -> vben user转换
+       */
+      const userInfo: UserInfo = {
+        avatar: user.avatar ?? '',
+        permissions,
+        realName: user.nickName,
+        roles,
+        userId: `${user.userId}`,
+        username: user.userName,
+      };
+      userStore.setUserInfo(userInfo);
       return userInfo;
     }
     // userInfo = await getUserInfoApi();
