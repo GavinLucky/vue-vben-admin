@@ -210,8 +210,8 @@ function createRequestClient(baseURL: string) {
           authStore.setDoLogoutStatus(true);
           if (config.customOptions.errorMessageMode === 'modal') {
             Modal.error({
-              content: '登录超时, 请重新登录',
-              title: $t('fallback.http.errorTip'),
+              content: $t('authentication..loginAgainSubTitle'),
+              title: $t('authentication..loginAgainTitle'),
               okText: '重新登录',
               onOk: async () => {
                 console.log('ok');
