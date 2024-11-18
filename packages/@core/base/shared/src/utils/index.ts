@@ -15,3 +15,6 @@ export * from './update-css-variables';
 export * from './util';
 export * from './window';
 export { default as cloneDeep } from 'lodash.clonedeep';
+export { default as debounce } from 'lodash.debounce';
+export { default as omit } from 'lodash.omit';
+export { default as pick } from 'lodash.pick';

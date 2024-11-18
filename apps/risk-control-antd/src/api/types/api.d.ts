@@ -39,6 +39,35 @@ declare namespace RgApi {
       id: number;
       name: string;
     }
+    interface IUploadFile {
+      name: string;
+      file: Blob;
+      filename: string;
+    }
+  }
+  namespace Pagination {
+    /**
+     * 分页查询参数
+     */
+    export interface IPageQuery {
+      /** 是否升序 */
+      isAsc?: boolean;
+      /** 排序字段 */
+      orderByColumn?: string;
+      /** 当前页 */
+      pageNum?: number;
+      /** 每页大小 */
+      pageSize?: number;
+    }
+    /**
+     * 分页信息
+     */
+    export interface IPageResult<T = any> {
+      /** 结果集 */
+      rows: T[];
+      /**  总数 */
+      total: number;
+    }
   }
   namespace Auth {
     interface IAuthCodeResp {
@@ -128,6 +157,72 @@ declare namespace RgApi {
       noCache: boolean;
       /** 菜单名 */
       title: string;
+    }
+  }
+  namespace Profile {
+    interface IProfileRole extends Common.IRole {
+      deptCheckStrictly?: any;
+      menuCheckStrictly?: any;
+      remark: string;
+    }
+    interface IProfileDept extends Common.IDept {
+      deptId: number;
+      parentId: number;
+      parentName?: any;
+      ancestors: string;
+      deptName: string;
+      orderNum: number;
+      leader: string;
+      phone?: any;
+      email: string;
+      status: string;
+      createTime?: any;
+    }
+    interface IProfileUser extends User.IUserInfo {
+      dept: IProfileDept;
+      roleIds?: string[];
+      postIds?: string[];
+      roleId: number;
+      deptName: string;
+    }
+    interface IUserProfile {
+      user: IProfileUser;
+      /** 角色名称 */
+      roleGroup: string;
+      /** 岗位名称  */
+      postGroup: string;
+    }
+    /** 更新用户密码请求参数 */
+    interface IUpdatePasswordReq {
+      oldPassword: string;
+      newPassword: string;
+    }
+  }
+  namespace Dict {
+    interface IDictData {
+      createBy: string;
+      createTime: string;
+      cssClass: string;
+      default: boolean;
+      dictCode: number;
+      dictLabel: string;
+      dictSort: number;
+      dictType: string;
+      dictValue: string;
+      isDefault: string;
+      listClass: string;
+      remark: string;
+      status: string;
+      updateBy?: any;
+      updateTime?: any;
+    }
+    interface IDictType {
+      createTime: string;
+      dictId: number;
+      dictName: string;
+      dictType: string;
+      remark: string;
+      status: string;
     }
   }
 }

@@ -139,6 +139,7 @@ export const useAuthStore = defineStore('auth', () => {
        * 从后台user -> vben user转换
        */
       const userInfo: UserInfo = {
+        ...user,
         avatar: user.avatar ?? '',
         permissions,
         realName: user.nickName,

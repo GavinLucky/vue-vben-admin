@@ -55,3 +55,15 @@ export function doRequestFn<T>(
     },
   );
 }
+
+export function doUploadRequestFn(
+  uriPath: string,
+  data: { file: Blob | File } & Record<string, any>,
+  options: ICustomOptions = {},
+) {
+  return new Promise(() => {
+    setTimeout(async () => {
+      rgReqClient.upload(uriPath, data, options).then().catch()
+    });
+  });
+}
