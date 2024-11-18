@@ -19,13 +19,27 @@ async function generateAccessible(
   const { router } = options;
 
   options.routes = cloneDeep(options.routes);
-  // 生成路由
-  const accessibleRoutes = await generateRoutes(mode, options);
+  let accessibleRoutes: RouteRecordRaw[] = [];
+  try {
+    // 生成路由
+    accessibleRoutes = await generateRoutes(mode, options);
 
-  // 动态添加到router实例内
-  accessibleRoutes.forEach((route) => {
-    router.addRoute(route);
-  });
+    // 动态添加到router实例内
+    accessibleRoutes.forEach((route) => {
+      /**
+       * 外链不应该被添加到路由 由menu处理
+       */
+      if (/^https?:\/\//.test(route.path.toLowerCase())) {
+        return;
+      }
+      router.addRoute(route);
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    // eslint-disable-next-line no-debugger,no-restricted-syntax
+    debugger;
+  }
 
   // 生成菜单
   const accessibleMenus = await generateMenus(accessibleRoutes, options.router);

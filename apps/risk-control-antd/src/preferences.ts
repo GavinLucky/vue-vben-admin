@@ -8,6 +8,7 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: 'RC',
+    accessMode: 'backend',
   },
   theme: {
     builtinType: 'default',

@@ -91,4 +91,43 @@ declare namespace RgApi {
       userType: string;
     }
   }
+  namespace Menu {
+    /**
+     * @description: 菜单
+     */
+    interface IMenu {
+      /** 总是显示 */
+      alwaysShow?: boolean;
+      /** 子路由信息 */
+      children: Menu[];
+      /** 组件名称 Layout */
+      component: string;
+      /** 是否隐藏 */
+      hidden: boolean;
+      /** 路由信息 */
+      meta: MenuMeta;
+      /** 菜单名 */
+      name: string;
+      /** 菜单路径 */
+      path: string;
+      /** 路由参数(json形式) */
+      query?: string;
+      /** 重定向 */
+      redirect?: string;
+    }
+
+    /**
+     * @description: 菜单meta
+     */
+    export interface IMenuMeta {
+      /** 菜单图标 */
+      icon: string;
+      /** 外链链接 */
+      link?: string;
+      /** 是否不缓存 */
+      noCache: boolean;
+      /** 菜单名 */
+      title: string;
+    }
+  }
 }

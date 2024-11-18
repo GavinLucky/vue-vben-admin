@@ -30,6 +30,8 @@ interface ICustomOptions {
   ignoreAddHeader?: boolean;
   /** 请求开启加密 */
   encrypt?: boolean;
+  /** 用来缓存请求参数 */
+  catchRequestParams?: string;
 }
 interface InternalAxiosRequestConfigWithCustomOptions
   extends InternalAxiosRequestConfig<any> {
@@ -95,7 +97,10 @@ function createRequestClient(baseURL: string) {
           '_',
         );
       }
-
+      // eslint ignore
+      config.customOptions?.catchRequestParams = JSON.stringify(
+        config?.data || null,
+      );
       // 全局加密
       if (
         enableEncrypt &&
@@ -104,7 +109,7 @@ function createRequestClient(baseURL: string) {
       ) {
         const aesKey = generateAesKey();
         config.headers['encrypt-key'] = doEncrypt(encryptBase64(aesKey));
-        console.log('url path:', config.url, 'data', config.data);
+        // console.log('url path:', config.url, 'data', config.data);
         config.data =
           typeof config.data === 'object'
             ? encryptWithAes(JSON.stringify(config.data), aesKey)
@@ -120,6 +125,20 @@ function createRequestClient(baseURL: string) {
       const { data: responseData, status } = response;
       const { code = undefined, data } = responseData;
       if (status >= 200 && status < 400 && code === 200) {
+        // console.log(response);
+        // eslint-disable-next-line no-console
+        console.log(
+          ` [url]:${response.config.url}`,
+          '\n',
+          '[params]:',
+          JSON.parse(
+            (response.config as InternalAxiosRequestConfigWithCustomOptions)
+              .customOptions?.catchRequestParams || '',
+          ),
+          '\n',
+          '[resp]:',
+          responseData,
+        );
         // 兼容返回的数据结构
         return data || responseData;
       }
