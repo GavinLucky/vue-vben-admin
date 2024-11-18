@@ -89,6 +89,21 @@ function setupAccessGuard(router: Router) {
     // 当前登录用户拥有的角色标识列表
     const userInfo: RgApi.User.IUserInfo | undefined =
       (userStore.userInfo as any) || (await authStore.fetchUserInfo());
+    if (!userInfo) {
+      // 如果用户信息不存在
+      accessStore.$reset();
+      // 没有访问权限，跳转登录页面
+      if (to.fullPath !== LOGIN_PATH) {
+        return {
+          path: LOGIN_PATH,
+          // 如不需要，直接删除 query
+          query: { redirect: encodeURIComponent(to.fullPath) },
+          // 携带当前跳转的页面，登录后重新跳转该页面
+          replace: true,
+        };
+      }
+      return to;
+    }
     // TODO:  role临时改动
     const userRoles =
       userInfo?.roles.map((ele) => {

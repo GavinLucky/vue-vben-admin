@@ -1,6 +1,6 @@
 declare namespace RgApi {
   namespace Base {
-    type ServerDataType<T> = {
+    type ServerDataType<T = any> = {
       code: number;
       data: null | T;
       msg: string;

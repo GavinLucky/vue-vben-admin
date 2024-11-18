@@ -15,7 +15,7 @@ export function doRequestFn<T>(
       setTimeout(async () => {
         let [error, resp]:
           | [undefined, undefined]
-          | RgApi.Base.tupleResp<T, Error> = [undefined, undefined];
+          | RgApi.Base.TupleResp<T, Error> = [undefined, undefined];
         if (type === 'get') {
           try {
             let urlPathWithQuery = uriPath;
@@ -35,8 +35,8 @@ export function doRequestFn<T>(
             resolve([error, resp] as [undefined, T]);
           } catch (error_) {
             console.error(error_);
-            error = error_ as RgApi.Base.TupleResp;
-            resolve([error, resp] as [RgApi.Base.TupleResp, undefined]);
+            error = error_ as RgApi.Base.ServerDataType;
+            resolve([error, resp] as RgApi.Base.TupleResp);
           }
         } else {
           try {
@@ -47,8 +47,8 @@ export function doRequestFn<T>(
             resolve([error, resp] as [undefined, T]);
           } catch (error_) {
             console.error(error_);
-            error = error_ as RgApi.Base.TupleResp;
-            resolve([error, resp] as [RgApi.Base.TupleResp, undefined]);
+            error = error_ as RgApi.Base.ServerDataType;
+            resolve([error, resp] as RgApi.Base.TupleResp);
           }
         }
       });

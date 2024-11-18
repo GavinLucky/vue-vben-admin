@@ -26,6 +26,8 @@ export function getLoginUserInfoApi() {
     'get',
     '/system/user/getInfo',
     undefined,
-    undefined,
+    {
+      errorMessageMode: 'none',
+    },
   );
 }

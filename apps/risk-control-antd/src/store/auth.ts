@@ -20,9 +20,13 @@ export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
   const router = useRouter();
-
+  /** 是否操作了401 */
+  const doLogoutStatus = ref(false);
   const loginLoading = ref(false);
 
+  function setDoLogoutStatus(status: boolean) {
+    doLogoutStatus.value = status;
+  }
   /**
    * 异步处理登录操作
    * Asynchronously handle the login process
@@ -74,7 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
             ? await onSuccess?.()
             : await router.push(userInfo?.homePath || DEFAULT_HOME_PATH);
         }
-
+        setDoLogoutStatus(false);
         if (userInfo?.realName) {
           notification.success({
             description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
@@ -123,6 +127,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
     const [err, backUserInfoResp] = await getLoginUserInfoApi();
     if (err) {
+      if (err?.code === 401) {
+        // token过期
+        // throw new Error('获取用户信息失败.');
+        // return null;
+      }
       return null;
     } else {
       const { permissions = [], roles = [], user } = backUserInfoResp;
@@ -155,5 +164,7 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     loginLoading,
     logout,
+    doLogoutStatus,
+    setDoLogoutStatus,
   };
 });
