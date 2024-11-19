@@ -22,6 +22,7 @@ export function userProfile() {
  * @returns void
  */
 export function userProfileUpdate(data: any) {
+  console.log('data', data);
   return doRequestFn<RgApi.Profile.IProfileUser>('post', profileApiPath.root);
 }
 

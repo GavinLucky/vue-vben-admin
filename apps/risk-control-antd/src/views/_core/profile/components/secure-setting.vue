@@ -20,7 +20,7 @@ const [BasicForm, formApi] = useVbenForm({
   },
   schema: [
     {
-      component: 'InputPassword',
+      component: 'AInputPassword',
       fieldName: 'oldPassword',
       label: '旧密码',
       rules: z
@@ -29,7 +29,7 @@ const [BasicForm, formApi] = useVbenForm({
         .max(20, '密码长度不能超过20个字符'),
     },
     {
-      component: 'InputPassword',
+      component: 'AInputPassword',
       dependencies: {
         rules(values) {
           return z
@@ -48,7 +48,7 @@ const [BasicForm, formApi] = useVbenForm({
       rules: 'required',
     },
     {
-      component: 'InputPassword',
+      component: 'AInputPassword',
       dependencies: {
         rules(values) {
           return z
@@ -88,7 +88,7 @@ function handleSubmit(values: any) {
         buttonLoading(true);
         const data = omit(values, [
           'confirmPassword',
-        ]) as RgApi.Profile.IUpdatePasswordParam;
+        ]) as RgApi.Profile.IUpdatePasswordReq;
         await userUpdatePassword(data);
         await authStore.logout(true);
       } catch (error) {
@@ -103,7 +103,9 @@ function handleSubmit(values: any) {
 </script>
 
 <template>
-  <div class="mt-[16px] md:w-full lg:w-1/2 2xl:w-2/5">
-    <BasicForm />
+  <div class="flex flex-row items-center justify-center">
+    <div class="mt-[16px] md:w-full lg:w-1/2 2xl:w-2/5">
+      <BasicForm />
+    </div>
   </div>
 </template>

@@ -13,8 +13,12 @@ import SettingPanel from './setting-panel.vue';
 
 const profile = ref<RgApi.Profile.IProfileUser>();
 async function loadProfile() {
-  const resp = await userProfile();
-  profile.value = resp;
+  const [err, resp] = await userProfile();
+  if (err) {
+    console.error(err);
+  } else {
+    profile.value = resp;
+  }
 }
 
 onMounted(loadProfile);

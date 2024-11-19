@@ -14,7 +14,7 @@ import {
 import { userUpdateAvatar } from '#/api/rg-modules/system/profile/profile-api';
 // import { CropperAvatar } from '#/components/cropper';
 
-const props = defineProps<{ profile?: RgApi.Profile.IProfileUser }>();
+const props = defineProps<{ profile?: { user: RgApi.Profile.IProfileUser } }>();
 
 defineEmits<{
   // 头像上传完毕
@@ -47,7 +47,7 @@ const poetrySrc = computed(() => {
         </Tooltip>
         <div class="flex flex-col items-center gap-[8px]">
           <span class="text-foreground text-xl font-bold">
-            {{ profile.nickName ?? '未知' }}
+            {{ profile?.user.nickName ?? '未知' }}
           </span>
           <!-- https://www.jinrishici.com/doc/#image -->
           <img :src="poetrySrc" />
@@ -56,24 +56,24 @@ const poetrySrc = computed(() => {
       <div class="px-[24px]">
         <Descriptions :column="1">
           <DescriptionsItem label="账号">
-            {{ profile.userName }}
+            {{ profile?.user.userName }}
           </DescriptionsItem>
           <DescriptionsItem label="手机号码">
-            {{ profile.phonenumber || '未绑定手机号' }}
+            {{ profile?.user.phonenumber || '未绑定手机号' }}
           </DescriptionsItem>
           <DescriptionsItem label="邮箱">
-            {{ profile.email || '未绑定邮箱' }}
+            {{ profile?.user.email || '未绑定邮箱' }}
           </DescriptionsItem>
           <DescriptionsItem label="部门">
             <Tag color="processing">
-              {{ profile.deptName ?? '未分配部门' }}
+              {{ profile?.user.deptName ?? '未分配部门' }}
             </Tag>
-            <Tag v-if="profile.postGroup" color="processing">
-              {{ profile.postGroup }}
+            <Tag v-if="profile?.user.postGroup" color="processing">
+              {{ profile?.user.postGroup }}
             </Tag>
           </DescriptionsItem>
           <DescriptionsItem label="上次登录">
-            {{ profile.loginDate }}
+            {{ profile?.user.loginDate }}
           </DescriptionsItem>
         </Descriptions>
       </div>

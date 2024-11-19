@@ -37,6 +37,7 @@ export function dictTypeExport(data: any) {
  * @returns void
  */
 export function dictTypeRemove(dictIds: (number | string)[]) {
+  console.log('dictIds', dictIds);
   // return requestClient.deleteWithMsg<void>(`${dictTypeApi.root}/${dictIds}`);
 }
 

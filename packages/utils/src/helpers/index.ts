@@ -4,6 +4,7 @@ export * from './generate-routes-backend';
 export * from './generate-routes-frontend';
 export * from './get-popup-container';
 export * from './merge-route-modules';
+export * from './mitt';
 export * from './reset-routes';
 export * from './unmount-global-loading';
-export * from './uuid'
+export * from './uuid';

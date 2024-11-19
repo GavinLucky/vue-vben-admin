@@ -30,7 +30,7 @@ const [BasicForm, formApi] = useVbenForm({
   },
   schema: [
     {
-      component: 'Input',
+      component: 'AInput',
       dependencies: {
         show: () => false,
         triggerFields: [''],
@@ -40,19 +40,19 @@ const [BasicForm, formApi] = useVbenForm({
       rules: 'required',
     },
     {
-      component: 'Input',
+      component: 'AInput',
       fieldName: 'nickName',
       label: '昵称',
       rules: 'required',
     },
     {
-      component: 'Input',
+      component: 'AInput',
       fieldName: 'email',
       label: '邮箱',
       rules: z.string().email('请输入正确的邮箱'),
     },
     {
-      component: 'RadioGroup',
+      component: 'ARadioGroup',
       componentProps: {
         buttonStyle: 'solid',
         options: getDictOptions(DictEnum.SYS_USER_SEX),
@@ -64,7 +64,7 @@ const [BasicForm, formApi] = useVbenForm({
       rules: 'required',
     },
     {
-      component: 'Input',
+      component: 'AInput',
       fieldName: 'phonenumber',
       label: '电话',
       rules: z.string().regex(/^1[3-9]\d{9}$/, '请输入正确的电话'),
@@ -111,7 +111,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-[16px] md:w-full lg:w-1/2 2xl:w-2/5">
-    <BasicForm />
+  <div class="flex w-full flex-row items-center justify-center">
+    <div class="mt-[16px] md:w-full lg:w-1/2 2xl:w-2/5">
+      <BasicForm />
+    </div>
   </div>
 </template>

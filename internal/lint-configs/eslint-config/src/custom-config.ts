@@ -33,6 +33,7 @@ const customConfig: Linter.Config[] = [
     files: ['apps/**/**'],
     ignores: restrictedImportIgnores,
     rules: {
+      '@typescript-eslint/ no-invalid-void-type': 'off',
       'no-console': 'warn',
       'no-restricted-imports': [
         'error',

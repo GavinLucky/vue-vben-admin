@@ -1,7 +1,7 @@
 import { mitt } from '@vben/utils';
 
 type Events = {
-  updateProfile: void;
+  updateProfile: any;
 };
 
 export const emitter = mitt<Events>();

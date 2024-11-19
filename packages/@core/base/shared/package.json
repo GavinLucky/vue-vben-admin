@@ -88,8 +88,8 @@
     "defu": "catalog:",
     "lodash.clonedeep": "catalog:",
     "lodash.debounce": "catalog:",
-    "lodash.pick": "catalog:",
     "lodash.omit": "catalog:",
+    "lodash.pick": "catalog:",
     "nprogress": "catalog:",
     "tailwind-merge": "catalog:",
     "theme-colors": "catalog:"
@@ -97,8 +97,8 @@
   "devDependencies": {
     "@types/lodash.clonedeep": "catalog:",
     "@types/lodash.debounce": "catalog:",
-    "@types/lodash.pick": "catalog:",
     "@types/lodash.omit": "catalog:",
+    "@types/lodash.pick": "catalog:",
     "@types/nprogress": "catalog:"
   }
 }

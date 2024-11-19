@@ -63,7 +63,7 @@ export function doUploadRequestFn(
 ) {
   return new Promise(() => {
     setTimeout(async () => {
-      rgReqClient.upload(uriPath, data, options).then().catch()
+      rgReqClient.upload(uriPath, data, options).then().catch();
     });
   });
 }

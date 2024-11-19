@@ -37,6 +37,7 @@ export const useDictStore = defineStore('app-dict', () => {
    * 相当于加锁 保证只有第一次请求的结果能拿到
    */
   const dictRequestCache = reactive(
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     new Map<string, Promise<RgApi.Dict.IDictData[] | void>>(),
   );
 
