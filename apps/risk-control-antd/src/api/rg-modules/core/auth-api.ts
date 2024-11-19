@@ -5,7 +5,7 @@ import { doRequestFn } from '#/api/rg-modules/base-request';
 
 const { clientId } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
-export function getAuthCodeApi() {
+export function getAuthCaptchaImageApi() {
   return doRequestFn<RgApi.Auth.IAuthCodeResp>('get', '/auth/code', undefined, {
     ignoreAddHeader: true,
   });

@@ -29,6 +29,15 @@ const customConfig: Linter.Config[] = [
     },
   },
   {
+    files: ['packages/types/**/**'],
+    ignores: restrictedImportIgnores,
+    rules: {
+      'perfectionist/sort-interfaces': 'off',
+      'perfectionist/sort-objects': 'off',
+      'spaced-comment': 'off',
+    },
+  },
+  {
     // apps内部的一些基础规则
     files: ['apps/**/**'],
     ignores: restrictedImportIgnores,

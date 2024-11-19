@@ -8,7 +8,7 @@ import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import { getAuthCodeApi } from '#/api/rg-modules/core/auth-api';
+import { getAuthCaptchaImageApi } from '#/api/rg-modules/core/auth-api';
 import { useAuthStore } from '#/store';
 
 import GraphValidateCode from './graph-validate-code.vue';
@@ -22,11 +22,11 @@ const authLoginRef = ref<typeof AuthenticationLogin>();
 const captchaDataRef = ref<RgApi.Auth.IAuthCodeResp | undefined>(undefined);
 
 const loadServerCaptchaFn = async () => {
-  const [err, resp] = await getAuthCodeApi();
+  const [err, resp] = await getAuthCaptchaImageApi();
   if (err) {
     message.error(err.msg || '获取验证码失败，请刷新网页重试');
     console.error(err);
-    if (captchaDataRef.value.img) {
+    if (captchaDataRef.value?.img) {
       captchaDataRef.value = { ...captchaDataRef.value, img: '' };
     }
     return false;
@@ -81,7 +81,7 @@ const formSchema = computed((): VbenFormSchema[] => {
         propCaptcha: captchaDataRef.value?.img,
       },
       dependencies: {
-        if: () => captchaDataRef.value?.captchaEnabled,
+        if: () => !!captchaDataRef.value?.captchaEnabled,
         triggerFields: [''],
       },
       rules: z
