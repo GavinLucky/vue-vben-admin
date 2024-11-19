@@ -17,9 +17,9 @@ const profileRoute: RouteRecordStringComponent[] = [
       hideInMenu: true,
       title: $t('ui.widgets.profile'),
     },
-    name: 'Profile',
-    path: '/',
-    redirect: '/profile',
+    name: '_profile',
+    path: '/profile',
+    redirect: '/profile/user-profile',
     children: [
       {
         component: '/_core/profile/index',
@@ -28,8 +28,8 @@ const profileRoute: RouteRecordStringComponent[] = [
           keepAlive: true,
           title: $t('ui.widgets.profile'),
         },
-        name: 'ProfileIndex',
-        path: '/profile',
+        name: 'profile_user-profileIndex',
+        path: 'user-profile',
       },
     ],
   },
@@ -127,6 +127,7 @@ export const localMenuList: RouteRecordStringComponent[] = [
         component: '/dashboard/analytics/index',
         meta: {
           affixTab: true,
+          icon: 'lucide:area-chart',
           title: 'page.dashboard.analytics',
         },
       },
@@ -135,42 +136,43 @@ export const localMenuList: RouteRecordStringComponent[] = [
         path: '/workspace',
         component: '/dashboard/workspace/index',
         meta: {
+          icon: 'carbon:workspace',
           title: 'page.dashboard.workspace',
         },
       },
-      {
-        name: 'VbenDocument',
-        path: '/vben-admin/document',
-        component: 'IFrameView',
-        meta: {
-          icon: 'lucide:book-open-text',
-          iframeSrc: 'https://dapdap.top',
-          keepAlive: true,
-          title: $t('demos.vben.document'),
-        },
-      },
+      // {
+      //   name: 'VbenDocument',
+      //   path: '/vben-admin/document',
+      //   component: 'IFrameView',
+      //   meta: {
+      //     icon: 'lucide:book-open-text',
+      //     iframeSrc: 'https://dapdap.top',
+      //     keepAlive: true,
+      //     title: $t('demos.vben.document'),
+      //   },
+      // },
     ],
   },
-  {
-    component: 'BasicLayout',
-    meta: {
-      hideChildrenInMenu: true,
-      icon: 'lucide:copyright',
-      order: 9999,
-      title: $t('demos.vben.about'),
-    },
-    name: 'About',
-    path: '/about',
-    children: [
-      {
-        component: '/_core/about/index',
-        meta: {
-          title: $t('demos.vben.about'),
-        },
-        name: 'VbenAbout',
-        path: '/vben-admin/about',
-      },
-    ],
-  },
+  // {
+  //   component: 'BasicLayout',
+  //   meta: {
+  //     hideChildrenInMenu: true,
+  //     icon: 'lucide:copyright',
+  //     order: 9999,
+  //     title: $t('demos.vben.about'),
+  //   },
+  //   name: 'About',
+  //   path: '/about',
+  //   children: [
+  //     {
+  //       component: '/_core/about/index',
+  //       meta: {
+  //         title: $t('demos.vben.about'),
+  //       },
+  //       name: 'VbenAbout',
+  //       path: '/vben-admin/about',
+  //     },
+  //   ],
+  // },
   ...profileRoute,
 ];
