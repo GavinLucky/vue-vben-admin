@@ -38,7 +38,7 @@ export function dictTypeExport(data: any) {
  */
 export function dictTypeRemove(dictIds: (number | string)[]) {
   console.log('dictIds', dictIds);
-  // return requestClient.deleteWithMsg<void>(`${dictTypeApi.root}/${dictIds}`);
+  return doRequestFn('delete', `${dictTypeApi.root}/${dictIds}`);
 }
 
 /**
@@ -46,7 +46,7 @@ export function dictTypeRemove(dictIds: (number | string)[]) {
  * @returns void
  */
 export function refreshDictTypeCache() {
-  // return requestClient.deleteWithMsg<void>(dictTypeApi.dictTypeRefreshCache);
+  return doRequestFn('delete', dictTypeApi.dictTypeRefreshCache);
 }
 
 /**
@@ -65,7 +65,7 @@ export function dictTypeAdd(data: any) {
  * @returns void
  */
 export function dictTypeUpdate(data: any) {
-  return doRequestFn<any>('post', dictTypeApi.root, data);
+  return doRequestFn<any>('put', dictTypeApi.root, data);
   // return requestClient.putWithMsg<void>(dictTypeApi.root, data);
 }
 

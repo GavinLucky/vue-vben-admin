@@ -47,6 +47,7 @@ export function dictDataExport(data: any) {
  */
 export function dictDataRemove(dictIds: (number | string)[]) {
   console.log('dictIds', dictIds);
+  return doRequestFn('delete', `${dictDataApi.root}/${dictIds}`);
   // return requestClient.deleteWithMsg<void>(`${dictDataApi.root}/${dictIds}`);
 }
 
@@ -65,7 +66,7 @@ export function dictDataAdd(data: any) {
  * @returns void
  */
 export function dictDataUpdate(data: any) {
-  return doRequestFn<any>('post', dictDataApi.root, data);
+  return doRequestFn<any>('put', dictDataApi.root, data);
 }
 
 /**
