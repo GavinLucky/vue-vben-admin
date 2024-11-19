@@ -17,9 +17,6 @@
     },
     "./global": {
       "types": "./global.d.ts"
-    },
-    "./vite": {
-      "types": "./src/vite-env.d.ts"
     }
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-/// <reference types="vite/client" />
+// / <reference types="vite/client" />
 
 export interface ImportMetaEnv {
   /**  本地缓存版本 */
