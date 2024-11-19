@@ -23,7 +23,11 @@ export function userProfile() {
  */
 export function userProfileUpdate(data: any) {
   console.log('data', data);
-  return doRequestFn<RgApi.Profile.IProfileUser>('post', profileApiPath.root);
+  return doRequestFn<RgApi.Profile.IProfileUser>(
+    'put',
+    profileApiPath.root,
+    data,
+  );
 }
 
 /**
@@ -33,7 +37,7 @@ export function userProfileUpdate(data: any) {
  */
 export function userUpdatePassword(data: RgApi.Profile.IUpdatePasswordReq) {
   return doRequestFn<RgApi.Profile.IProfileUser>(
-    'post',
+    'put',
     profileApiPath.updatePassword,
     data,
     {

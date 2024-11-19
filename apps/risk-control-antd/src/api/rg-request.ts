@@ -35,7 +35,8 @@ interface ICustomOptions {
   encrypt?: boolean;
   /** 用来缓存请求参数 */
   cacheRequestParams?: string;
-  errorMessageMode?: 'message' | 'modal' | 'none';
+  /** 错误提示 */
+  errorMessageMode?: '' | 'message' | 'modal' | 'none';
 }
 interface InternalAxiosRequestConfigWithCustomOptions
   extends InternalAxiosRequestConfig<any> {
@@ -106,7 +107,7 @@ function createRequestClient(baseURL: string) {
       }
       let tempErrorMsgMode = errorMessageMode;
       if (!errorMessageMode) {
-        tempErrorMsgMode = 'message';
+        tempErrorMsgMode = 'none';
       }
       if (config && config.customOptions) {
         config.customOptions.cacheRequestParams = JSON.stringify(
@@ -123,7 +124,7 @@ function createRequestClient(baseURL: string) {
       if (
         enableEncrypt &&
         encrypt &&
-        ['get', 'post'].includes(config.method?.toLowerCase() || '')
+        ['post', 'put'].includes(config.method?.toLowerCase() || '')
       ) {
         const aesKey = generateAesKey();
         config.headers['encrypt-key'] = doEncrypt(encryptBase64(aesKey));
@@ -159,7 +160,7 @@ function createRequestClient(baseURL: string) {
       const { code = undefined, data } = responseData;
       // eslint-disable-next-line no-console
       console.log(
-        ` [url]:${response.config.url}`,
+        ` [url]:${response.config.url}------[${response.config.method}]`,
         '\n',
         '[params]:',
         JSON.parse(

@@ -1,13 +1,15 @@
 import type { ICustomOptions } from '#/api/rg-request';
 
+import { isString } from '@vben/utils';
+
 import { stringify } from 'qs';
 
 import { rgReqClient } from '#/api/rg-request';
 
 export function doRequestFn<T>(
-  type: 'get' | 'post',
+  type: 'delete' | 'get' | 'post' | 'put',
   uriPath: string,
-  data: object | undefined = undefined,
+  data: object | string | undefined = undefined,
   options: ICustomOptions = {},
 ) {
   return new Promise<RgApi.Base.TupleResp<T, RgApi.Base.ServerDataType<any>>>(
@@ -40,10 +42,17 @@ export function doRequestFn<T>(
           }
         } else {
           try {
-            const postRes = await rgReqClient.post<T>(uriPath, data, {
+            // 兼容restful风格 put delete 改造
+            let tempData = data;
+            let tempUriPath = uriPath;
+            if (isString(data)) {
+              tempUriPath = `${uriPath}${data}`;
+              tempData = undefined;
+            }
+            const otherRes = await rgReqClient[type]<T>(tempUriPath, tempData, {
               customOptions: options,
             } as any);
-            resp = postRes;
+            resp = otherRes;
             resolve([error, resp] as [undefined, T]);
           } catch (error_) {
             console.error(error_);

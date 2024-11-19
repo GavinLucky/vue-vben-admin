@@ -4,8 +4,10 @@ import type { Recordable } from '@vben/types';
 import { onMounted } from 'vue';
 
 import { DictEnum } from '@vben/constants';
-import { useUserStore } from '@vben/stores';
+// import { useUserStore } from '@vben/stores';
 import { pick } from '@vben/utils';
+
+import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { userProfileUpdate } from '#/api/rg-modules/system/profile/profile-api';
@@ -14,9 +16,9 @@ import { getDictOptions } from '#/utils/dict-utils';
 
 import { emitter } from '../mitt';
 
-const props = defineProps<{ profile: RgApi.Profile.IProfileUser }>();
+const props = defineProps<{ profile: RgApi.Profile.IUserProfile }>();
 
-const userStore = useUserStore();
+// const userStore = useUserStore();
 const authStore = useAuthStore();
 
 const [BasicForm, formApi] = useVbenForm({
@@ -85,12 +87,18 @@ function buttonLoading(loading: boolean) {
 async function handleSubmit(values: Recordable<any>) {
   try {
     buttonLoading(true);
-    await userProfileUpdate(values);
-    // 更新store
-    const userInfo = await authStore.fetchUserInfo();
-    userStore.setUserInfo(userInfo);
-    // 左边reload
-    emitter.emit('updateProfile');
+    const [err] = await userProfileUpdate(values);
+    if (err) {
+      message.error(err.msg || '更新失败，请稍后重试');
+    } else {
+      message.success('更新成功');
+      // 更新store
+      const userInfo = await authStore.fetchUserInfo();
+
+      console.log(userInfo);
+      // 左边reload
+      emitter.emit('updateProfile');
+    }
   } catch (error) {
     console.error(error);
   } finally {
@@ -99,7 +107,7 @@ async function handleSubmit(values: Recordable<any>) {
 }
 
 onMounted(() => {
-  const data = pick(props.profile, [
+  const data = pick(props.profile.user, [
     'userId',
     'nickName',
     'email',

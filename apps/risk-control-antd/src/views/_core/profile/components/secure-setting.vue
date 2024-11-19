@@ -3,7 +3,7 @@
 
 import { omit } from '@vben/utils';
 
-import { Modal } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { userUpdatePassword } from '#/api/rg-modules/system/profile/profile-api';
@@ -89,8 +89,13 @@ function handleSubmit(values: any) {
         const data = omit(values, [
           'confirmPassword',
         ]) as RgApi.Profile.IUpdatePasswordReq;
-        await userUpdatePassword(data);
-        await authStore.logout(true);
+        const [err] = await userUpdatePassword(data);
+        if (err) {
+          message.error(err.msg);
+        } else {
+          message.success('修改密码成功');
+          await authStore.logout(true);
+        }
       } catch (error) {
         console.error(error);
       } finally {

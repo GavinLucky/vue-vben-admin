@@ -3,18 +3,10 @@ import { computed } from 'vue';
 
 import { preferences, usePreferences } from '@vben/preferences';
 
-import {
-  Card,
-  Descriptions,
-  DescriptionsItem,
-  Tag,
-  Tooltip,
-} from 'ant-design-vue';
-
 import { userUpdateAvatar } from '#/api/rg-modules/system/profile/profile-api';
 import { CropperAvatar } from '#/component/cropper';
 
-const props = defineProps<{ profile?: { user: RgApi.Profile.IProfileUser } }>();
+const props = defineProps<{ profile?: RgApi.Profile.IUserProfile }>();
 
 defineEmits<{
   // 头像上传完毕
@@ -33,10 +25,10 @@ const poetrySrc = computed(() => {
 </script>
 
 <template>
-  <Card :loading="!profile" class="h-full lg:w-1/3">
+  <a-card :loading="!profile" class="h-full lg:w-1/3">
     <div v-if="profile" class="flex flex-col items-center gap-[24px]">
       <div class="flex flex-col items-center gap-[20px]">
-        <Tooltip title="点击上传头像">
+        <a-tooltip title="点击上传头像">
           <CropperAvatar
             :show-btn="false"
             :upload-api="userUpdateAvatar"
@@ -44,7 +36,7 @@ const poetrySrc = computed(() => {
             width="120"
             @change="$emit('uploadFinish')"
           />
-        </Tooltip>
+        </a-tooltip>
         <div class="flex flex-col items-center gap-[8px]">
           <span class="text-foreground text-xl font-bold">
             {{ profile?.user.nickName ?? '未知' }}
@@ -54,29 +46,29 @@ const poetrySrc = computed(() => {
         </div>
       </div>
       <div class="px-[24px]">
-        <Descriptions :column="1">
-          <DescriptionsItem label="账号">
+        <a-descriptions :column="1">
+          <a-descriptions-item label="账号">
             {{ profile?.user.userName }}
-          </DescriptionsItem>
-          <DescriptionsItem label="手机号码">
+          </a-descriptions-item>
+          <a-descriptions-item label="手机号码">
             {{ profile?.user.phonenumber || '未绑定手机号' }}
-          </DescriptionsItem>
-          <DescriptionsItem label="邮箱">
+          </a-descriptions-item>
+          <a-descriptions-item label="邮箱">
             {{ profile?.user.email || '未绑定邮箱' }}
-          </DescriptionsItem>
-          <DescriptionsItem label="部门">
-            <Tag color="processing">
+          </a-descriptions-item>
+          <a-descriptions-item label="部门">
+            <a-tag color="processing">
               {{ profile?.user.deptName ?? '未分配部门' }}
-            </Tag>
-            <Tag v-if="profile?.user.postGroup" color="processing">
+            </a-tag>
+            <a-tag v-if="profile?.user.postGroup" color="processing">
               {{ profile?.user.postGroup }}
-            </Tag>
-          </DescriptionsItem>
-          <DescriptionsItem label="上次登录">
+            </a-tag>
+          </a-descriptions-item>
+          <a-descriptions-item label="上次登录">
             {{ profile?.user.loginDate }}
-          </DescriptionsItem>
-        </Descriptions>
+          </a-descriptions-item>
+        </a-descriptions>
       </div>
     </div>
-  </Card>
+  </a-card>
 </template>
