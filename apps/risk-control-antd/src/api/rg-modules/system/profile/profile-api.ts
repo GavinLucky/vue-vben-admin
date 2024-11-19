@@ -66,7 +66,7 @@ export function userUpdateAvatar(fileCallback: RgApi.Common.IUploadFile) {
   file = new File([file], filename);
 
   return doUploadRequestFn(profileApiPath.updateAvatar, {
-    file,
+    avatarfile: file,
     fileName: filename,
-  });
+  } as any);
 }

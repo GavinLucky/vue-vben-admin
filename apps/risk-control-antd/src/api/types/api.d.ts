@@ -40,9 +40,9 @@ declare namespace RgApi {
       name: string;
     }
     interface IUploadFile {
-      name: string;
+      name?: string;
       file: Blob;
-      filename: string;
+      filename?: string;
     }
   }
   namespace Pagination {

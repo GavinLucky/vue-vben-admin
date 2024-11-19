@@ -3,6 +3,8 @@ import { computed } from 'vue';
 
 import { preferences, usePreferences } from '@vben/preferences';
 
+import { message } from 'ant-design-vue';
+
 import { userUpdateAvatar } from '#/api/rg-modules/system/profile/profile-api';
 import { CropperAvatar } from '#/component/cropper';
 
@@ -16,6 +18,30 @@ defineEmits<{
 const avatar = computed(
   () => props.profile?.user.avatar ?? preferences.app.defaultAvatar,
 );
+
+const doUploadAvatarFn = ({
+  file,
+  filename,
+  name,
+}: {
+  file: Blob;
+  filename: string;
+  name: string;
+}) => {
+  console.log('doUploadAvatarFn', file, filename, name);
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      const [err, resp] = await userUpdateAvatar({ file });
+      console.log('doUploadAvatarFn', err, resp);
+      if (err) {
+        message.error(err.msg);
+        reject(err);
+      } else {
+        resolve(resp);
+      }
+    });
+  });
+};
 
 const { isDark } = usePreferences();
 const poetrySrc = computed(() => {
@@ -31,7 +57,8 @@ const poetrySrc = computed(() => {
         <a-tooltip title="点击上传头像">
           <CropperAvatar
             :show-btn="false"
-            :upload-api="userUpdateAvatar"
+            :size="100"
+            :upload-api="doUploadAvatarFn"
             :value="avatar"
             width="120"
             @change="$emit('uploadFinish')"

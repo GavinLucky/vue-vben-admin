@@ -58,6 +58,7 @@ function modalLoading(loading: boolean) {
 // Block upload
 function handleBeforeUpload(file: File) {
   if (props.size > 0 && file.size > 1024 * 1024 * props.size) {
+    console.error('图片太大 max size 1024*1024 used size', file.size);
     emit('uploadError', { msg: t('component.cropper.imageTooBig') });
     return false;
   }

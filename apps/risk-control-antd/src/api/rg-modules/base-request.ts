@@ -68,17 +68,30 @@ export function doRequestFn<T>(
   );
 }
 
-export function doUploadRequestFn(
+export function doUploadRequestFn<T>(
   uriPath: string,
-  data: { file: Blob | File } & Record<string, any>,
+  data: { [key: string]: Blob | File; file?: Blob | File | undefined } & Record<
+    string,
+    any
+  >,
   options: ICustomOptions = {},
 ) {
-  return new Promise(() => {
-    setTimeout(async () => {
+  return new Promise<
+    RgApi.Base.TupleResp<
+      RgApi.Base.ServerDataType<T>,
+      RgApi.Base.ServerDataType
+    >
+  >((resolve) => {
+    setTimeout(() => {
       rgReqClient
-        .upload(uriPath, data, options as any)
-        .then()
-        .catch();
+        .upload(uriPath, data as any, options as any)
+        .then((resp) => {
+          resolve([undefined, resp as T]);
+        })
+        .catch((error) => {
+          console.error(error);
+          resolve([error, undefined]);
+        });
     });
   });
 }
