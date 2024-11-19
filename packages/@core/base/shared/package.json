@@ -81,24 +81,19 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@tanstack/vue-store": "catalog:",
-    "@types/lodash.get": "catalog:",
     "@vue/shared": "catalog:",
     "clsx": "catalog:",
     "dayjs": "catalog:",
     "defu": "catalog:",
     "lodash.clonedeep": "catalog:",
-    "lodash.debounce": "catalog:",
-    "lodash.omit": "catalog:",
-    "lodash.pick": "catalog:",
+    "lodash.get": "catalog:",
     "nprogress": "catalog:",
     "tailwind-merge": "catalog:",
     "theme-colors": "catalog:"
   },
   "devDependencies": {
     "@types/lodash.clonedeep": "catalog:",
-    "@types/lodash.debounce": "catalog:",
-    "@types/lodash.omit": "catalog:",
-    "@types/lodash.pick": "catalog:",
+    "@types/lodash.get": "catalog:",
     "@types/nprogress": "catalog:"
   }
 }

@@ -12,7 +12,7 @@ import {
 } from 'ant-design-vue';
 
 import { userUpdateAvatar } from '#/api/rg-modules/system/profile/profile-api';
-// import { CropperAvatar } from '#/components/cropper';
+import { CropperAvatar } from '#/component/cropper';
 
 const props = defineProps<{ profile?: { user: RgApi.Profile.IProfileUser } }>();
 
@@ -22,7 +22,7 @@ defineEmits<{
 }>();
 
 const avatar = computed(
-  () => props.profile?.avatar ?? preferences.app.defaultAvatar,
+  () => props.profile?.user.avatar ?? preferences.app.defaultAvatar,
 );
 
 const { isDark } = usePreferences();
