@@ -13,7 +13,7 @@ import { logoutApi } from '#/api';
 import {
   authLoginWithPsdApi,
   getLoginUserInfoApi,
-} from '#/api/rg-modules/auth-api';
+} from '#/api/rg-modules/core/auth-api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -52,10 +52,13 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setAccessToken(accessToken);
 
         userInfo = await fetchUserInfo();
+        if (!userInfo) {
+          throw new Error('获取用户信息失败.');
+        }
         /**
          * 设置用户信息
          */
-        userStore.setUserInfo(userInfo);
+        userStore.setUserInfo(userInfo as any);
         /**
          * 在这里设置权限
          */
@@ -146,8 +149,8 @@ export const useAuthStore = defineStore('auth', () => {
         roles,
         userId: `${user.userId}`,
         username: user.userName,
-      };
-      userStore.setUserInfo(userInfo);
+      } as any;
+      userStore.setUserInfo(userInfo as any);
       return userInfo;
     }
     // userInfo = await getUserInfoApi();

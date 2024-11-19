@@ -17,7 +17,10 @@ export function doRequestFn<T>(
       setTimeout(async () => {
         let [error, resp]:
           | [undefined, undefined]
-          | RgApi.Base.TupleResp<T, Error> = [undefined, undefined];
+          | RgApi.Base.TupleResp<T, Error | RgApi.Base.ServerDataType> = [
+          undefined,
+          undefined,
+        ];
         if (type === 'get') {
           try {
             let urlPathWithQuery = uriPath;
@@ -35,7 +38,7 @@ export function doRequestFn<T>(
             );
             resp = getRes;
             resolve([error, resp] as [undefined, T]);
-          } catch (error_) {
+          } catch (error_: any) {
             console.error(error_);
             error = error_ as RgApi.Base.ServerDataType;
             resolve([error, resp] as RgApi.Base.TupleResp);
@@ -54,7 +57,7 @@ export function doRequestFn<T>(
             } as any);
             resp = otherRes;
             resolve([error, resp] as [undefined, T]);
-          } catch (error_) {
+          } catch (error_: any) {
             console.error(error_);
             error = error_ as RgApi.Base.ServerDataType;
             resolve([error, resp] as RgApi.Base.TupleResp);
@@ -72,7 +75,10 @@ export function doUploadRequestFn(
 ) {
   return new Promise(() => {
     setTimeout(async () => {
-      rgReqClient.upload(uriPath, data, options).then().catch();
+      rgReqClient
+        .upload(uriPath, data, options as any)
+        .then()
+        .catch();
     });
   });
 }

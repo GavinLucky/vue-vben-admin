@@ -14,6 +14,7 @@ export function getAuthCodeApi() {
 export function authLoginWithPsdApi(
   params: RgApi.Auth.IAuthLoginReq,
 ): Promise<[any, any]> {
+  // 写死的租户id
   params.tenantId = '000000';
   params.clientId = clientId;
   return doRequestFn<RgApi.Auth.IAuthLoginResp>('post', '/auth/login', params, {

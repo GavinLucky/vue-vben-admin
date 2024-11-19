@@ -8,7 +8,7 @@ import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import { getAuthCodeApi } from '#/api/rg-modules/auth-api';
+import { getAuthCodeApi } from '#/api/rg-modules/core/auth-api';
 import { useAuthStore } from '#/store';
 
 import GraphValidateCode from './graph-validate-code.vue';
