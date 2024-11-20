@@ -6,7 +6,12 @@
     "paths": {
       "#/*": ["./src/*"]
     },
-    "typeRoots": ["./src/**/types", "./src/**/typings", "@vben/types", "./src/types"]
+    "typeRoots": [
+      "./src/**/types",
+      "./src/**/typings",
+      "@vben/types",
+      "./src/types"
+    ]
   },
   "references": [{ "path": "./tsconfig.node.json" }],
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue"]
