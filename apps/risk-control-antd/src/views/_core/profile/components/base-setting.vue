@@ -23,7 +23,7 @@ const props = defineProps<{ profile: RgApi.Profile.IUserProfile }>();
 const authStore = useAuthStore();
 
 const [BasicForm, formApi] = useVbenForm({
-  actionWrapperClass: 'text-left ml-[68px] mb-[16px]',
+  actionWrapperClass: 'text-center mt-[16px] mb-[16px]',
   commonConfig: {
     labelWidth: 60,
   },

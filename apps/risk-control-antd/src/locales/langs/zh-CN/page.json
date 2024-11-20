@@ -50,7 +50,8 @@
       "updatePsdFailedTip": "修改密码失败，请稍后重试",
       "checkMinLength": "密码长度不能少于5个字符",
       "checkMaxLength": "密码长度不能超过20个字符",
-      "confirmToChangedPsdContent": "确认修改密码的操作吗？"
+      "confirmToChangedPsdContent": "确认修改密码的操作吗？",
+      "confirmTitle": "提示"
     }
   }
 }

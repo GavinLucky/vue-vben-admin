@@ -11,7 +11,7 @@ import { userUpdatePassword } from '#/api/rg-modules/system/profile/profile-api'
 import { useAuthStore } from '#/store';
 
 const [BasicForm, formApi] = useVbenForm({
-  actionWrapperClass: 'text-left mb-[16px] ml-[96px]',
+  actionWrapperClass: 'text-center mb-[16px] mt-[16px]',
   commonConfig: {
     labelWidth: 90,
   },
@@ -80,7 +80,6 @@ const [BasicForm, formApi] = useVbenForm({
     },
   ],
   submitButtonOptions: {
-    class: 'mt-[16px]',
     content: $t('page.profile.resetPsd.buttonTitle'),
   },
 });
@@ -118,7 +117,7 @@ function handleSubmit(values: any) {
         buttonLoading(false);
       }
     },
-    title: '提示',
+    title: $t('page.profile.resetPsd.confirmTitle'),
   });
 }
 </script>
