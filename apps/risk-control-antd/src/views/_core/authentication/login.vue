@@ -113,7 +113,7 @@ const submitBtnClickFn = async ([error, values]: any) => {
       await authStore.authLogin(params);
     } catch (error_) {
       console.error(error_);
-      message.error(error_.msg || '登录失败');
+      message.error(error_.message || '登录失败');
       await loadServerCaptchaFn();
     }
   } else {

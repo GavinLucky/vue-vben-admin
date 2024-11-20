@@ -45,8 +45,9 @@ export const useAuthStore = defineStore('auth', () => {
       );
       // debugger;
       if (loginErr) {
+        console.error('loginErr', loginErr);
         // 登录失败
-        throw new Error(loginErr);
+        throw new Error(loginErr.msg);
         return;
       }
       const { access_token: accessToken } = loginResp;
