@@ -40,13 +40,16 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const [loginErr, { access_token: accessToken }] =
-        await authLoginWithPsdApi(params as RgApi.Auth.IAuthLoginReq);
+      const [loginErr, loginResp] = await authLoginWithPsdApi(
+        params as RgApi.Auth.IAuthLoginReq,
+      );
       // debugger;
       if (loginErr) {
         // 登录失败
         throw new Error(loginErr);
+        return;
       }
+      const { access_token: accessToken } = loginResp;
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);

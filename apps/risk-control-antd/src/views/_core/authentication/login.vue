@@ -109,7 +109,13 @@ const submitBtnClickFn = async ([error, values]: any) => {
       uuid: captchaDataRef.value?.uuid || '',
       grantType: 'password',
     };
-    await authStore.authLogin(params);
+    try {
+      await authStore.authLogin(params);
+    } catch (error_) {
+      console.error(error_);
+      message.error(error_.msg || '登录失败');
+      await loadServerCaptchaFn();
+    }
   } else {
     message.warn($t('authentication.notSupportedLogin'), 5);
   }
