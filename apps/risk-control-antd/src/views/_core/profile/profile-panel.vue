@@ -54,10 +54,10 @@ const poetrySrc = computed(() => {
   <a-card :loading="!profile" class="h-full lg:w-1/3">
     <div v-if="profile" class="flex flex-col items-center gap-[24px]">
       <div class="flex flex-col items-center gap-[20px]">
-        <a-tooltip title="点击上传头像">
+        <a-tooltip :title="$t('page.profile.uploadAvatarTooltip')">
           <CropperAvatar
             :show-btn="false"
-            :size="100"
+            :size="8"
             :upload-api="doUploadAvatarFn"
             :value="avatar"
             width="120"
@@ -66,32 +66,34 @@ const poetrySrc = computed(() => {
         </a-tooltip>
         <div class="flex flex-col items-center gap-[8px]">
           <span class="text-foreground text-xl font-bold">
-            {{ profile?.user.nickName ?? '未知' }}
+            {{ profile?.user.nickName ?? $t('page.profile.userNameUnknown') }}
           </span>
           <!-- https://www.jinrishici.com/doc/#image -->
-          <img :src="poetrySrc" />
+          <img :src="poetrySrc" alt="" />
         </div>
       </div>
       <div class="px-[24px]">
         <a-descriptions :column="1">
-          <a-descriptions-item label="账号">
+          <a-descriptions-item :label="$t('page.profile.accountKey')">
             {{ profile?.user.userName }}
           </a-descriptions-item>
-          <a-descriptions-item label="手机号码">
-            {{ profile?.user.phonenumber || '未绑定手机号' }}
+          <a-descriptions-item :label="$t('page.profile.phoneKey')">
+            {{
+              profile?.user.phonenumber || $t('page.profile.phonenumberUnknown')
+            }}
           </a-descriptions-item>
-          <a-descriptions-item label="邮箱">
-            {{ profile?.user.email || '未绑定邮箱' }}
+          <a-descriptions-item :label="$t('page.profile.emailKey')">
+            {{ profile?.user.email || $t('page.profile.emailUnknown') }}
           </a-descriptions-item>
-          <a-descriptions-item label="部门">
+          <a-descriptions-item :label="$t('page.profile.deptKey')">
             <a-tag color="processing">
-              {{ profile?.user.deptName ?? '未分配部门' }}
+              {{ profile?.user.deptName ?? $t('page.profile.deptNameUnknown') }}
             </a-tag>
             <a-tag v-if="profile?.user.postGroup" color="processing">
               {{ profile?.user.postGroup }}
             </a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="上次登录">
+          <a-descriptions-item :label="$t('page.profile.lastLoginTimeKey')">
             {{ profile?.user.loginDate }}
           </a-descriptions-item>
         </a-descriptions>

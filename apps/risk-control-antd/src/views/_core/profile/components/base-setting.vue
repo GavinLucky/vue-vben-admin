@@ -4,6 +4,7 @@ import type { Recordable } from '@vben/types';
 import { onMounted } from 'vue';
 
 import { DictEnum } from '@vben/constants';
+import { $t } from '@vben/locales';
 // import { useUserStore } from '@vben/stores';
 import { pick } from '@vben/utils';
 
@@ -44,14 +45,14 @@ const [BasicForm, formApi] = useVbenForm({
     {
       component: 'AInput',
       fieldName: 'nickName',
-      label: '昵称',
+      label: $t('page.profile.nickNameKey'),
       rules: 'required',
     },
     {
       component: 'AInput',
       fieldName: 'email',
-      label: '邮箱',
-      rules: z.string().email('请输入正确的邮箱'),
+      label: $t('page.profile.emailKey'),
+      rules: z.string().email($t('page.profile.emailErrorTip')),
     },
     {
       component: 'ARadioGroup',
@@ -62,18 +63,20 @@ const [BasicForm, formApi] = useVbenForm({
       },
       defaultValue: '0',
       fieldName: 'sex',
-      label: '性别',
+      label: $t('page.profile.genderKey'),
       rules: 'required',
     },
     {
       component: 'AInput',
       fieldName: 'phonenumber',
-      label: '电话',
-      rules: z.string().regex(/^1[3-9]\d{9}$/, '请输入正确的电话'),
+      label: $t('page.profile.phoneKey'),
+      rules: z
+        .string()
+        .regex(/^1[3-9]\d{9}$/, $t('page.profile.phoneErrorTip')),
     },
   ],
   submitButtonOptions: {
-    content: '更新信息',
+    content: $t('page.profile.updateData'),
   },
 });
 
@@ -89,9 +92,9 @@ async function handleSubmit(values: Recordable<any>) {
     buttonLoading(true);
     const [err] = await userProfileUpdate(values);
     if (err) {
-      message.error(err.msg || '更新失败，请稍后重试');
+      message.error(err.msg || $t('page.profile.updateFailedTip'));
     } else {
-      message.success('更新成功');
+      message.success($t('page.profile.updateSuccessTip'));
       // 更新store
       const userInfo = await authStore.fetchUserInfo();
 

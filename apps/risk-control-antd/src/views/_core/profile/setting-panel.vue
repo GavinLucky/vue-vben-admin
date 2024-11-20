@@ -1,10 +1,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import { $t } from '@vben/locales';
+
 import { TabPane, Tabs } from 'ant-design-vue';
 
 // import AccountBind from './components/account-bind.vue';
 import BaseSetting from './components/base-setting.vue';
+
 // import OnlineDevice from './components/online-device.vue';
 import SecureSetting from './components/secure-setting.vue';
 
@@ -22,12 +25,12 @@ export default defineComponent({
       {
         component: 'BaseSetting',
         key: '1',
-        name: '基本设置',
+        name: $t('page.profile.basicTabName'),
       },
       {
         component: 'SecureSetting',
         key: '2',
-        name: '安全设置',
+        name: $t('page.profile.securityTabName'),
       },
       // {
       //   component: 'AccountBind',

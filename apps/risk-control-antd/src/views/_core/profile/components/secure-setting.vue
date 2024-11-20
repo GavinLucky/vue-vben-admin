@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import type { UpdatePasswordParam } from '#/api/system/profile/model';
 
+import { $t } from '@vben/locales';
 import { omit } from '@vben/utils';
 
 import { message, Modal } from 'ant-design-vue';
@@ -22,29 +23,35 @@ const [BasicForm, formApi] = useVbenForm({
     {
       component: 'AInputPassword',
       fieldName: 'oldPassword',
-      label: '旧密码',
+      label: $t('page.profile.resetPsd.oldPsd'),
+      componentProps: {
+        placeholder: $t('page.profile.resetPsd.oldPsdPlaceholder'),
+      },
       rules: z
-        .string({ message: '请输入密码' })
-        .min(5, '密码长度不能少于5个字符')
-        .max(20, '密码长度不能超过20个字符'),
+        .string({ message: $t('page.profile.resetPsd.oldPsdPlaceholder') })
+        .min(5, $t('page.profile.resetPsd.checkMinLength'))
+        .max(20, $t('page.profile.resetPsd.checkMaxLength')),
     },
     {
       component: 'AInputPassword',
       dependencies: {
         rules(values) {
           return z
-            .string({ message: '请输入新密码' })
-            .min(5, '密码长度不能少于5个字符')
-            .max(20, '密码长度不能超过20个字符')
+            .string({ message: $t('page.profile.resetPsd.newPsdPlaceholder') })
+            .min(5, $t('page.profile.resetPsd.checkMinLength'))
+            .max(20, $t('page.profile.resetPsd.checkMaxLength'))
             .refine(
               (value) => value !== values.oldPassword,
-              '新旧密码不能相同',
+              $t('page.profile.resetPsd.checkMaxLength'),
             );
         },
         triggerFields: ['newPassword', 'oldPassword'],
       },
       fieldName: 'newPassword',
-      label: '新密码',
+      label: $t('page.profile.resetPsd.newPsd'),
+      componentProps: {
+        placeholder: $t('page.profile.resetPsd.newPsdPlaceholder'),
+      },
       rules: 'required',
     },
     {
@@ -52,23 +59,29 @@ const [BasicForm, formApi] = useVbenForm({
       dependencies: {
         rules(values) {
           return z
-            .string({ message: '请输入确认密码' })
-            .min(5, '密码长度不能少于5个字符')
-            .max(20, '密码长度不能超过20个字符')
+            .string({
+              message: $t('page.profile.resetPsd.confirmPsdPlaceholder'),
+            })
+            .min(5, $t('page.profile.resetPsd.checkMinLength'))
+            .max(20, $t('page.profile.resetPsd.checkMaxLength'))
             .refine(
               (value) => value === values.newPassword,
-              '新密码和确认密码不一致',
+              $t('page.profile.resetPsd.confirmPsdNotMatch'),
             );
         },
         triggerFields: ['newPassword', 'confirmPassword'],
       },
       fieldName: 'confirmPassword',
-      label: '确认密码',
+      label: $t('page.profile.resetPsd.confirmPsd'),
+      componentProps: {
+        placeholder: $t('page.profile.resetPsd.confirmPsdPlaceholder'),
+      },
       rules: 'required',
     },
   ],
   submitButtonOptions: {
-    content: '修改密码',
+    class: 'mt-[16px]',
+    content: $t('page.profile.resetPsd.buttonTitle'),
   },
 });
 
@@ -82,7 +95,7 @@ function buttonLoading(loading: boolean) {
 const authStore = useAuthStore();
 function handleSubmit(values: any) {
   Modal.confirm({
-    content: '确认修改密码吗？',
+    content: $t('page.profile.resetPsd.confirmToChangedPsdContent'),
     onOk: async () => {
       try {
         buttonLoading(true);
@@ -93,11 +106,14 @@ function handleSubmit(values: any) {
         if (err) {
           message.error(err.msg);
         } else {
-          message.success('修改密码成功');
+          message.success($t('page.profile.resetPsd.updatePsdSuccessTip'));
           await authStore.logout(true);
         }
       } catch (error) {
         console.error(error);
+        message.error(
+          error.msg || $t('page.profile.resetPsd.updatePsdFailedTip'),
+        );
       } finally {
         buttonLoading(false);
       }

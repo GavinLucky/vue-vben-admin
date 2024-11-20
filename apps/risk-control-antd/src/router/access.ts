@@ -35,7 +35,9 @@ async function getFormatedMenuListFn() {
       // 特别注意 这里要深拷贝
       const menuList = [...cloneDeep(localMenuList), ...vbenMenuList];
       console.log('menuList', menuList);
-      resolve(menuList);
+      setTimeout(() => {
+        resolve(menuList);
+      }, 500);
     });
   });
 }
@@ -217,14 +219,14 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
     fetchMenuListAsync: async () => {
       message.loading({
         content: `${$t('common.loadingMenu')}...`,
-        duration: 0,
+        duration: 1.5,
         key: keys,
       });
       const list = await getFormatedMenuListFn();
       message.success({
         key: keys,
         duration: 1,
-        content: '路由加载成功，正在载入中，请稍后...',
+        content: `${$t('common.loadingMenuFinished')}`,
       });
       return list;
     },
