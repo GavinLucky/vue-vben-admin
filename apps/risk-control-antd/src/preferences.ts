@@ -31,6 +31,6 @@ export const overridesPreferences = defineOverridesPreferences({
   },
   logo: {
     enable: true,
-    source: '/logo.png',
+    source: `${import.meta.env.VITE_BASE}logo.png`,
   },
 });

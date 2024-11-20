@@ -38,6 +38,7 @@
     "dev": "turbo-run dev",
     "dev:antd": "pnpm -F @vben/web-antd run dev",
     "dev:rc-antd": "pnpm -F @rg/risk-control-antd run dev",
+    "dev:rc-antd-prod": "pnpm -F @rg/risk-control-antd run dev:prod",
     "dev:docs": "pnpm -F @vben/docs run dev",
     "dev:ele": "pnpm -F @vben/web-ele run dev",
     "dev:naive": "pnpm -F @vben/web-naive run dev",

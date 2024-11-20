@@ -4,6 +4,9 @@ export default defineConfig(async () => {
   return {
     application: {},
     vite: {
+      build: {
+        outDir: 'dist/rc',
+      },
       server: {
         proxy: {
           '/api': {
