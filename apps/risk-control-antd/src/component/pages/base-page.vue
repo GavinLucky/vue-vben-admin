@@ -10,6 +10,7 @@ interface Props {
   title?: string;
   description?: string;
   contentClass?: string;
+
   /**
    * 根据content可见高度自适应
    */
@@ -18,7 +19,7 @@ interface Props {
 // eslint-disable-next-line vue/define-macros-order
 const {
   viewLoading = false,
-  contentClass = '',
+  contentClass = 'p-4',
   description = '',
   autoContentHeight = false,
   title = '',
@@ -39,6 +40,7 @@ const contentStyle = computed(() => {
       height: shouldAutoHeight.value
         ? `calc(var(--vben-content-height) - ${headerHeight.value}px - ${footerHeight.value}px)`
         : '0',
+      position: 'relative',
       // 'overflow-y': shouldAutoHeight.value?'auto':'unset',
     };
   }
@@ -92,7 +94,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div :class="contentClass" :style="contentStyle" class="h-full p-4">
+    <div :class="contentClass" :style="contentStyle" class="h-full">
       <slot></slot>
     </div>
 
