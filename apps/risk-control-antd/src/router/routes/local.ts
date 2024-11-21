@@ -106,6 +106,65 @@ const profileRoute: RouteRecordStringComponent[] = [
     ],
   },
 ];
+/** 工具外链 */
+const otherLinksMenuList: RouteRecordStringComponent[] = [
+  {
+    component: 'BasicLayout',
+    meta: {
+      badgeType: 'dot',
+      icon: 'arcticons:moondrop-link',
+      order: 9999,
+      title: '工具链接',
+    },
+    name: '_tool-link',
+    path: '/_tool-link',
+    children: [
+      {
+        name: '_tool-link_tata-outer',
+        path: 'tata-outer',
+        component: 'IFrameView',
+        meta: {
+          link: 'https://bita.rivergame.net/',
+          icon: 'svg:bita',
+          title: '数数(外链)',
+        },
+      },
+      {
+        name: '_tool-link_tata-inner',
+        path: 'tata-inner',
+        component: 'IFrameView',
+        meta: {
+          iframeSrc: 'https://bita.rivergame.net/',
+          icon: 'svg:bita',
+          keepAlive: true,
+          title: '数数(子tab页)',
+        },
+      },
+      //
+      {
+        name: '_tool-link_bi-outer',
+        path: 'bi-outer',
+        component: 'IFrameView',
+        meta: {
+          icon: 'https://bi.rivergame.net/bi.datacenter/logo.png',
+          link: 'https://bi.rivergame.net/',
+          title: 'BI(外链)',
+        },
+      },
+      {
+        name: '_tool-link_bi-inner',
+        path: 'bi-inner',
+        component: 'IFrameView',
+        meta: {
+          icon: 'https://bi.rivergame.net/bi.datacenter/logo.png',
+          iframeSrc: 'https://bi.rivergame.net/',
+          keepAlive: true,
+          title: 'BI(子tab页)',
+        },
+      },
+    ],
+  },
+];
 
 /**
  * 这里放本地路由
@@ -175,4 +234,5 @@ export const localMenuList: RouteRecordStringComponent[] = [
   //   ],
   // },
   ...profileRoute,
+  ...otherLinksMenuList,
 ];
