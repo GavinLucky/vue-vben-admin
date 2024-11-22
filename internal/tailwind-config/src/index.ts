@@ -136,7 +136,18 @@ export default {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px',
+        sm: { max: '767px' },
+        // => @media (min-width: 640px and max-width: 767px) { ... }
+        // eslint-disable-next-line perfectionist/sort-objects
+        md: { max: '1023px', min: '768px' },
+        // => @media (min-width: 768px and max-width: 1023px) { ... }
+        // => @media (min-width: 1024px and max-width: 1279px) { ... }
+        // eslint-disable-next-line perfectionist/sort-objects
+        lg: { max: '1279px', min: '1024px' },
+        // => @media (min-width: 1280px and max-width: 1535px) { ... }
+        xl: { max: '1535px', min: '1280px' },
+        // eslint-disable-next-line perfectionist/sort-objects
+        '2xl': { min: '1536px' },
       },
     },
     extend: {
@@ -200,6 +211,20 @@ export default {
         '100': '100',
         '1000': '1000',
       },
+    },
+    screens: {
+      // sm: { max: '767px' },
+      // // => @media (min-width: 640px and max-width: 767px) { ... }
+      // // eslint-disable-next-line perfectionist/sort-objects
+      // md: { max: '1023px', min: '768px' },
+      // // => @media (min-width: 768px and max-width: 1023px) { ... }
+      // // => @media (min-width: 1024px and max-width: 1279px) { ... }
+      // // eslint-disable-next-line perfectionist/sort-objects
+      // lg: { max: '1279px', min: '1024px' },
+      // // => @media (min-width: 1280px and max-width: 1535px) { ... }
+      // xl: { max: '1535px', min: '1280px' },
+      // // eslint-disable-next-line perfectionist/sort-objects
+      // '2xl': { min: '1536px' },
     },
   },
 } as Config;

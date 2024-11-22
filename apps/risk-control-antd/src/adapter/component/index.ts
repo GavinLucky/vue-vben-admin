@@ -80,7 +80,13 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-
+    // 特殊定义-覆盖默认组件
+    DefaultButton: (props, { attrs, slots }) => {
+      return h(Button, { ...props, attrs, type: 'default' }, slots);
+    },
+    PrimaryButton: (props, { attrs, slots }) => {
+      return h(Button, { ...props, attrs, type: 'primary' }, slots);
+    },
     AAutoComplete: AutoComplete,
     AButton: Button,
     ACheckbox: Checkbox,

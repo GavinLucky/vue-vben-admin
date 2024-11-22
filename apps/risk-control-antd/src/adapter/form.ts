@@ -1,6 +1,6 @@
 import type {
+  VbenFormProps as FormProps,
   VbenFormSchema as FormSchema,
-  VbenFormProps,
 } from '@vben/common-ui';
 
 import type { ComponentType } from './component';
@@ -46,4 +46,4 @@ export { formInit };
 export { useVbenForm, z };
 
 export type VbenFormSchema = FormSchema<ComponentType>;
-export type { VbenFormProps };
+export type VbenFormProps = FormProps<ComponentType>;

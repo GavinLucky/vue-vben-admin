@@ -59,50 +59,33 @@ const formOptions: VbenFormProps = {
   collapsed: false,
   schema: [
     {
-      component: 'Input',
-      defaultValue: '1',
-      fieldName: 'category',
-      label: 'Category',
+      component: 'ARangePicker',
+      fieldName: 'time',
+      label: '上线时间',
     },
     {
-      component: 'Input',
-      fieldName: 'productName',
-      label: 'ProductName',
+      component: 'AInput',
+      fieldName: 'action_user',
+      label: '上线人',
     },
     {
-      component: 'Input',
-      fieldName: 'price',
-      label: 'Price',
-    },
-    {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        options: [
-          {
-            label: 'Color1',
-            value: '1',
-          },
-          {
-            label: 'Color2',
-            value: '2',
-          },
-        ],
-        placeholder: '请选择',
-      },
-      fieldName: 'color',
-      label: 'Color',
-    },
-    {
-      component: 'DatePicker',
-      fieldName: 'datePicker',
-      label: 'Date',
+      component: 'ASelect',
+      fieldName: 'online_status',
+      label: '上线状态',
     },
   ],
+  resetButtonOptions: {
+    size: 'small',
+  },
+  submitButtonOptions: {
+    size: 'small',
+  },
   // 控制表单是否显示折叠按钮
-  showCollapseButton: true,
+  showCollapseButton: false,
   // 按下回车时是否提交表单
   submitOnEnter: false,
+  // 中屏一行显示2个，小屏一行显示1个
+  wrapperClass: 'grid-cols-1 lg:grid-cols-2  xl:gird-cols-3',
 };
 
 const [BasicTable] = useVbenVxeGrid({

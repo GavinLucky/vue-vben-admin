@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import { useAntdDesignTokens } from '@vben/hooks';
 import { preferences, usePreferences } from '@vben/preferences';
@@ -27,6 +27,19 @@ const tokenTheme = computed(() => {
     algorithm,
     token: tokens,
   };
+});
+onMounted(() => {
+  [...document.styleSheets].forEach((sheet) => {
+    try {
+      [...sheet.cssRules].forEach((rule) => {
+        if (rule instanceof CSSMediaRule) {
+          console.log(rule);
+        }
+      });
+    } catch {
+      console.warn('Could not access stylesheet', sheet.href);
+    }
+  });
 });
 </script>
 
