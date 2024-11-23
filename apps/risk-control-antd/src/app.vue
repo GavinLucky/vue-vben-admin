@@ -33,6 +33,7 @@ onMounted(() => {
     try {
       [...sheet.cssRules].forEach((rule) => {
         if (rule instanceof CSSMediaRule) {
+          console.log(rule.conditionText);
           console.log(rule);
         }
       });

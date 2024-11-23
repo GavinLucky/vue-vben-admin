@@ -86,7 +86,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: false,
   // 中屏一行显示2个，小屏一行显示1个
   wrapperClass:
-    'container sm:grid-cols-1 md:grid-cols-2  lg:gird-cols-3 xl:gird-cols-4 xxl:gird-cols-4',
+    'sm:max-md:max-w-[520px]  sm:max-md:m-auto md:w-full grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4',
 };
 
 const [BasicTable] = useVbenVxeGrid({
