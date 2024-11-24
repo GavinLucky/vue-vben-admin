@@ -103,9 +103,7 @@ const [BasicTable] = useVbenVxeGrid({
   <div class="flex h-full flex-col">
     <BasicTable :table-title="title" class="flex-1 overflow-hidden">
       <template #form-category>form</template>
-      <template #toolbar-tools>
-        <a-button size="small" type="primary">上传策略</a-button>
-      </template>
+      <template #toolbar-tools> </template>
 
       <template #avatar=""> </template>
       <template #status=""> </template>

@@ -194,9 +194,9 @@ export default {
           '100%': { transform: 'translateY(0)' },
         },
       },
-      screens: {
-        '3xl': '1920px',
-      },
+      // screens: {
+      //   '3xl': '1920px',
+      // },
       zIndex: {
         '100': '100',
         '1000': '1000',

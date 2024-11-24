@@ -2,6 +2,7 @@
 import type { VbenFormProps } from '#/adapter/form';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 
 defineOptions({
   name: 'OnlineVerListTableViewComp',
@@ -13,6 +14,10 @@ interface IProps {
 // eslint-disable-next-line vue/define-macros-order
 const { columns = [], title = '' } = defineProps<IProps>();
 
+const { emitterComputed } = useOnlineCtx();
+const uploadBtnClickFn = () => {
+  emitterComputed.value.emit('emitUpload');
+};
 const gridOptions: VxeGridProps = {
   checkboxConfig: {
     // 高亮
@@ -104,7 +109,9 @@ const [BasicTable] = useVbenVxeGrid({
     <BasicTable :table-title="title" class="flex-1 overflow-hidden">
       <template #form-category>form</template>
       <template #toolbar-tools>
-        <a-button size="small" type="primary">上传策略</a-button>
+        <a-button size="small" type="primary" @click="uploadBtnClickFn">
+          上传策略
+        </a-button>
       </template>
 
       <template #avatar=""> </template>

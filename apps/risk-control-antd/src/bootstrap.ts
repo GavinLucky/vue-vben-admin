@@ -22,6 +22,7 @@ async function bootstrap(namespace: string) {
   await initComponentAdapter();
 
   const app = createApp(App);
+
   registerAntdComponent(app);
   // 国际化 i18n 配置
   await setupI18n(app);

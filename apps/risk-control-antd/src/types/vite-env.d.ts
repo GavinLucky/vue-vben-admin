@@ -1,6 +1,6 @@
 // / <reference types="vite/client" />
 
-export interface ImportMetaEnv {
+interface ImportMetaEnv {
   /**  本地缓存版本 */
   VITE_APP_LOCAL_STORAGE_VERSION: string;
 
