@@ -42,6 +42,7 @@ export {
   Minimize,
   Minimize2,
   MoonStar,
+  NotebookTabs,
   Palette,
   PanelLeft,
   PanelRight,

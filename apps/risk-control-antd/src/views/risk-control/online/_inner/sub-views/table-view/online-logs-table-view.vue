@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
+import { NotebookTabs } from '@vben/icons';
+
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 
 defineOptions({
@@ -110,7 +112,16 @@ const [BasicTable] = useVbenVxeGrid({
 
       <template #avatar=""> </template>
       <template #status=""> </template>
-      <template #action=""> </template>
+      <template #action="">
+        <a-tooltip>
+          <template #title>查看详情</template>
+          <a-button shape="circle" size="small">
+            <template #icon>
+              <NotebookTabs class="h-full w-full p-1" />
+            </template>
+          </a-button>
+        </a-tooltip>
+      </template>
     </BasicTable>
   </div>
 </template>

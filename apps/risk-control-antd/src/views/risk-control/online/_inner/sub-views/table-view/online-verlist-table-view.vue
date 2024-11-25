@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
+import { ArcticonsMgrOnline, HugeiconFileExport } from '@vben/icons';
+
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
@@ -142,7 +144,26 @@ const [BasicTable] = useVbenVxeGrid({
 
       <template #avatar=""> </template>
       <template #status=""> </template>
-      <template #action=""> </template>
+      <template #action="">
+        <div class="flex w-full flex-row items-center justify-evenly">
+          <a-tooltip>
+            <template #title>上线</template>
+            <a-button shape="circle" size="small">
+              <template #icon>
+                <ArcticonsMgrOnline class="h-full w-full p-1" />
+              </template>
+            </a-button>
+          </a-tooltip>
+          <a-tooltip>
+            <template #title>导出</template>
+            <a-button shape="circle" size="small">
+              <template #icon>
+                <HugeiconFileExport class="h-full w-full p-1" />
+              </template>
+            </a-button>
+          </a-tooltip>
+        </div>
+      </template>
     </BasicTable>
   </div>
 </template>

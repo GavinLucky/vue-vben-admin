@@ -22,6 +22,9 @@ watch(
       titlePerfixRef.value = `${nV}【${cnTitle}】`;
     }
   },
+  {
+    immediate: true,
+  },
 );
 const activeKey = ref('1');
 </script>

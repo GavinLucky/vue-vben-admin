@@ -11,3 +11,7 @@ export const MdiGithub = createIconifyIcon('mdi:github');
 export const MdiGoogle = createIconifyIcon('mdi:google');
 
 export const MdiQqchat = createIconifyIcon('mdi:qqchat');
+
+export const ArcticonsMgrOnline = createIconifyIcon('arcticons:mgr-online');
+
+export const HugeiconFileExport = createIconifyIcon('hugeicons:file-export');

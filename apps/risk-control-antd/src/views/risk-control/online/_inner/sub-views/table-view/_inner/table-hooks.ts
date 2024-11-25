@@ -35,9 +35,10 @@ const onLineColumns: VxeGridProps['columns'] = [
     slots: { default: 'action' },
     title: '功能',
     resizable: false,
-    width: 180,
+    width: 120,
   },
 ];
+// 上线记录
 const onlineLogsColumns = [
   {
     field: 'createTime',
@@ -52,7 +53,7 @@ const onlineLogsColumns = [
   },
   {
     field: 'user',
-    title: '创建人',
+    title: '上线人',
     // slots: { default: 'avatar' },
     minWidth: 80,
   },
@@ -66,9 +67,9 @@ const onlineLogsColumns = [
     field: 'action',
     fixed: 'right',
     slots: { default: 'action' },
-    title: '操作',
+    title: '功能',
     resizable: false,
-    width: 180,
+    width: 90,
   },
 ];
 export function useTableHooks() {
