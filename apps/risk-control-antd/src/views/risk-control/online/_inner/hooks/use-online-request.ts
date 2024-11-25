@@ -1,4 +1,5 @@
 import {
+  getOnlineReleaseLogsApi,
   getOnlineWordTypeOptionsApi,
   getUploadedOnlineWordsListApi,
 } from '#/api/rg-modules/risk-control/words-online-api';
@@ -14,12 +15,24 @@ const getUploadedOnlineWordsListApiFn = (
   return getUploadedOnlineWordsListApi({
     pageNum,
     pageSize,
-    rawFilename: wordType,
+    filetype: wordType,
+  });
+};
+const getOnlineReleaseLogsApiFn = (
+  wordType: OnlineSp.Commom.wordsType,
+  pageIndex: number,
+  pageSize: number,
+) => {
+  return getOnlineReleaseLogsApi({
+    filetype: wordType,
+    pageNum: pageIndex,
+    pageSize,
   });
 };
 export function useOnlineRequest() {
   return {
     getOnlineWordTypeOptionsApiFn,
     getUploadedOnlineWordsListApiFn,
+    getOnlineReleaseLogsApiFn,
   };
 }

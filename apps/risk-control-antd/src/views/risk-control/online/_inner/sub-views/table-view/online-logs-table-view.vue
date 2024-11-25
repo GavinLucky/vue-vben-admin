@@ -3,7 +3,11 @@ import type { VbenFormProps } from '#/adapter/form';
 
 import { NotebookTabs } from '@vben/icons';
 
+import { message } from 'ant-design-vue';
+
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
+import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
 defineOptions({
   name: 'OnlineLogsTableViewComp',
@@ -12,6 +16,8 @@ interface IProps {
   columns: Record<any, any>[];
   title: string;
 }
+const { choosedWordTypeIndexComputed } = useOnlineCtx();
+const { getOnlineReleaseLogsApiFn } = useOnlineRequest();
 // eslint-disable-next-line vue/define-macros-order
 const { columns = [], title = '' } = defineProps<IProps>();
 
@@ -38,14 +44,24 @@ const gridOptions: VxeGridProps = {
         // 部门树选择处理
         // debugger;
         console.log('formValue', formValues);
-        const list = [];
-        for (let i = 0; i < page.pageSize; i++) {
-          list.push({ id: i, name: i, user: i });
+        const [err, resp] = await getOnlineReleaseLogsApiFn(
+          choosedWordTypeIndexComputed.value,
+          page.currentPage,
+          page.pageSize,
+        );
+        console.log('getOnlineReleaseLogsApiFn', err, resp);
+        if (err) {
+          message.error(err.msg || '获取日志失败');
+          return {
+            total: 0,
+            items: [],
+          };
+        } else {
+          return {
+            total: resp.total || 0,
+            items: resp.rows || [],
+          };
         }
-        return {
-          total: 50,
-          items: list,
-        };
       },
     },
   },

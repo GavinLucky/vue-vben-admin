@@ -142,8 +142,19 @@ const [BasicTable] = useVbenVxeGrid({
         </a-button>
       </template>
 
-      <template #avatar=""> </template>
-      <template #status=""> </template>
+      <template #rawFilename="{ row, column }">
+        <div class="flex w-full flex-row">
+          <div>{{ row[column.field] }}</div>
+          <div class="pl-1">
+            <a-tag v-if="row.releaseStatus === 2" color="success">
+              当前线上版本
+            </a-tag>
+            <a-tag v-if="row[column.field] === 1" color="processing">
+              正在发布版本
+            </a-tag>
+          </div>
+        </div>
+      </template>
       <template #action="">
         <div class="flex w-full flex-row items-center justify-evenly">
           <a-tooltip>

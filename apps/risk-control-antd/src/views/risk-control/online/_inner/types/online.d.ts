@@ -24,5 +24,20 @@ declare namespace OnlineSp {
       updateDt: string;
       remark: string;
     }
+    interface IReleaseLogItem {
+      id: number;
+      lastReleaseId: number;
+      releaseId: number;
+      rawFilename: string;
+      wordsDiff: string;
+      remark: string;
+      userId: number;
+      userName: null | string;
+      createTime: string;
+      wordsDiffMap: {
+        add: string[];
+        del: string[];
+      };
+    }
   }
 }

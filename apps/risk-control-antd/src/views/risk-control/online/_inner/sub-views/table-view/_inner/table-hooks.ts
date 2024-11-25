@@ -16,7 +16,8 @@ const onLineColumns: VxeGridProps['columns'] = [
   {
     field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kRawFilename,
     title: '文件名称',
-    minWidth: 130,
+    minWidth: 200,
+    slots: { default: 'rawFilename' },
   },
   {
     field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUserName,
@@ -46,22 +47,23 @@ const onlineLogsColumns = [
     minWidth: 150,
   },
   {
-    field: 'status',
-    title: '上线状态',
-    slots: { default: 'status' },
+    field: 'rawFilename',
+    title: '上线文件名',
+    // slots: { default: 'status' },
     minWidth: 100,
   },
   {
-    field: 'user',
+    field: 'userName',
     title: '上线人',
     // slots: { default: 'avatar' },
     minWidth: 80,
   },
   {
-    field: 'desp',
+    field: 'remark',
     title: '上线说明',
-    slots: { default: 'status' },
-    minWidth: 100,
+    overflow: 'ellipsis',
+    // slots: { default: 'status' },
+    minWidth: 200,
   },
   {
     field: 'action',

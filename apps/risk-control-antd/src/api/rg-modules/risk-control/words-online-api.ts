@@ -17,3 +17,12 @@ export function getUploadedOnlineWordsListApi(
     total: number;
   }>('get', '/ugc/words/history', params, {});
 }
+
+export function getOnlineReleaseLogsApi(
+  params: RgApi.Online.IGetWordsRelesedLogsReq,
+) {
+  return doRequestFn<{
+    rows: OnlineSp.RawItem.IReleaseLogItem[];
+    total: number;
+  }>('get', '/ugc/words/releaseLog', params, {});
+}

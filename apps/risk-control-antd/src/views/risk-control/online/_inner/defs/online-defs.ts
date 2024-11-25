@@ -23,5 +23,18 @@ export namespace OnlineConstSp {
       kUserId = 'userId',
       kUserName = 'userName',
     }
+
+    export enum ReleaseLogItemEnum {
+      kCreateTime = 'createTime',
+      kId = 'id',
+      kLastReleaseId = 'lastReleaseId',
+      kRawFilename = 'rawFilename',
+      kReleaseId = 'releaseId',
+      kRemark = 'remark',
+      kUserId = 'userId',
+      kUserName = 'userName',
+      kWordsDiff = 'wordsDiff',
+      kWordsDiffMap = 'wordsDiffMap',
+    }
   }
 }
