@@ -225,4 +225,10 @@ declare namespace RgApi {
       status: string;
     }
   }
+
+  namespace Online {
+    interface IGetUploadedWordsFilesReq extends Pagination.IPageQuery {
+      rawFilename: OnlineSp.Commom.wordsType;
+    }
+  }
 }

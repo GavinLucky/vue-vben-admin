@@ -8,3 +8,12 @@ export function getOnlineWordTypeOptionsApi() {
     {},
   );
 }
+
+export function getUploadedOnlineWordsListApi(
+  params: RgApi.Online.IGetUploadedWordsFilesReq,
+) {
+  return doRequestFn<{
+    rows: OnlineSp.RawItem.IUploadWordsFileItem[];
+    total: number;
+  }>('get', '/ugc/words/history', params, {});
+}

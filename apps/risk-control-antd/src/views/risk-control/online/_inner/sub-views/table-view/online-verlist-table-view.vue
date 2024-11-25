@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
+import { message } from 'ant-design-vue';
+
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
+import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
 defineOptions({
   name: 'OnlineVerListTableViewComp',
@@ -14,7 +17,9 @@ interface IProps {
 // eslint-disable-next-line vue/define-macros-order
 const { columns = [], title = '' } = defineProps<IProps>();
 
-const { emitterComputed } = useOnlineCtx();
+const { emitterComputed, choosedWordTypeIndexComputed } = useOnlineCtx();
+
+const { getUploadedOnlineWordsListApiFn } = useOnlineRequest();
 const uploadBtnClickFn = () => {
   emitterComputed.value.emit('emitUpload');
 };
@@ -33,22 +38,40 @@ const gridOptions: VxeGridProps = {
   maxHeight: '100%',
   // height: 'auto',
   keepSource: true,
-  pagerConfig: {},
+  pagerConfig: {
+    // total: 100,
+    // currentPage: 2,
+    pageSize: 10,
+  },
   proxyConfig: {
     autoLoad: true,
     ajax: {
       query: async ({ page }, formValues = {}) => {
         // 部门树选择处理
         // debugger;
-        console.log('formValue', formValues);
+        console.log('formValue', page, formValues);
         const list = [];
         for (let i = 0; i < page.pageSize; i++) {
           list.push({ id: i, name: i, user: i });
         }
-        return {
-          total: 50,
-          items: list,
-        };
+        const [err, resp] = await getUploadedOnlineWordsListApiFn(
+          choosedWordTypeIndexComputed.value,
+          page.currentPage,
+          page.pageSize,
+        );
+        if (err) {
+          message.error(err.msg || '获取失败，请稍后重试');
+          return {
+            total: 0,
+            items: [],
+          };
+        } else {
+          const { total, rows } = resp;
+          return {
+            total,
+            items: rows,
+          };
+        }
       },
     },
   },
