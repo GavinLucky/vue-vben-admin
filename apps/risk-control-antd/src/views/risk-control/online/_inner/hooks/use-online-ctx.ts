@@ -30,8 +30,13 @@ export const { setupStore: setUpOnlineCtx, useStore: useOnlineCtx } =
       if (first && isString(first)) {
         // 文本类型，转换成对象
         const formatList = list.map((ele) => {
+          const cnTitle = OnlineConstSp.wordsTypeLabelMap[ele];
           const obj = {
-            label: `${ele}(${OnlineConstSp.wordsTypeLabelMap[ele] || ''})`,
+            payload: {
+              wordsKey: ele,
+              cnTitle,
+            },
+            title: cnTitle,
             value: ele,
           };
           return obj;

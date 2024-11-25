@@ -129,11 +129,14 @@ const [BasicTable] = useVbenVxeGrid({
 
 <template>
   <div class="flex h-full flex-col">
-    <BasicTable :table-title="title" class="flex-1 overflow-hidden">
+    <BasicTable
+      :table-title="`${title}--上传列表`"
+      class="flex-1 overflow-hidden"
+    >
       <template #form-category>form</template>
       <template #toolbar-tools>
         <a-button size="small" type="primary" @click="uploadBtnClickFn">
-          上传策略
+          上传词表
         </a-button>
       </template>
 

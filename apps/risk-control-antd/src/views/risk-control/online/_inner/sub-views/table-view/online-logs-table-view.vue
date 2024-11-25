@@ -101,7 +101,10 @@ const [BasicTable] = useVbenVxeGrid({
 
 <template>
   <div class="flex h-full flex-col">
-    <BasicTable :table-title="title" class="flex-1 overflow-hidden">
+    <BasicTable
+      :table-title="`${title}--上线记录列表`"
+      class="flex-1 overflow-hidden"
+    >
       <template #form-category>form</template>
       <template #toolbar-tools> </template>
 

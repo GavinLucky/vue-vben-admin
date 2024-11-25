@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+
+import { OnlineConstSp } from '#/views/risk-control/online/_inner/defs/online-defs';
+import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 
 import { useTableHooks } from './table-view/_inner/table-hooks';
 import OnlineLogsTableViewComp from './table-view/online-logs-table-view.vue';
@@ -9,6 +12,17 @@ defineOptions({
   name: 'ThesaurusActionsComp',
 });
 const { onLineColumns, onlineLogsColumns } = useTableHooks();
+const { choosedWordTypeIndexComputed } = useOnlineCtx();
+const titlePerfixRef = ref('');
+watch(
+  () => choosedWordTypeIndexComputed.value,
+  (nV) => {
+    if (nV) {
+      const cnTitle = OnlineConstSp.wordsTypeLabelMap[nV];
+      titlePerfixRef.value = `${nV}【${cnTitle}】`;
+    }
+  },
+);
 const activeKey = ref('1');
 </script>
 
@@ -32,12 +46,12 @@ const activeKey = ref('1');
       <OnlineVerListTableViewComp
         v-show="activeKey === '1'"
         :columns="onLineColumns"
-        title="白名单"
+        :title="titlePerfixRef"
       />
       <OnlineLogsTableViewComp
         v-show="activeKey === '2'"
         :columns="onlineLogsColumns"
-        title="上线记录"
+        :title="titlePerfixRef"
       />
     </div>
   </div>

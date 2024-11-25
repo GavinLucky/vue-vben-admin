@@ -86,7 +86,14 @@ onUnmounted(() => {
           :value="choosedWordTypeIndexComputed"
           block
           @change="segmentedChangedFn"
-        />
+        >
+          <template #label="{ payload }">
+            <div>
+              <div>{{ payload.wordsKey }}</div>
+              <div class="text-[12px]">{{ payload.cnTitle }}</div>
+            </div>
+          </template>
+        </a-segmented>
       </template>
 
       <template #viewBottomSlot>
