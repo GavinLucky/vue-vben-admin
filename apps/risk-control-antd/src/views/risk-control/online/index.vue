@@ -5,6 +5,7 @@ import { useVbenDrawer } from '@vben/common-ui';
 
 import BasePageView from '#/component/pages/base-page.vue';
 import TopBottomView from '#/component/pages/top-bottom-view.vue';
+import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
 import { setUpOnlineCtx } from './_inner/hooks/use-online-ctx';
 import ThesaurusActionsComp from './_inner/sub-views/thesaurus-actions.vue';
@@ -14,14 +15,26 @@ defineOptions({
   name: 'RCOnlineIndex',
 });
 
-const { emitterComputed } = setUpOnlineCtx();
+const {
+  emitterComputed,
+  setWordTypeOptionsList,
+  wordTypeOptionsListComputed,
+  choosedWordTypeIndexComputed,
+  setChoosedWordTypeIndex,
+} = setUpOnlineCtx();
 
+const { getOnlineWordTypeOptionsApiFn } = useOnlineRequest();
 const testList = [];
 for (let i = 0; i < 2000; i++) {
   testList.push(`${i}`);
 }
 const loadingRef = ref(true);
-const thesaurusTypeRef = ref('write_list');
+
+/** */
+const segmentedChangedFn = (chooseValue) => {
+  // console.log('segmentedChangedFn', parmas);
+  setChoosedWordTypeIndex(chooseValue);
+};
 
 // #region 链接上传词库drawer
 // =================================================
@@ -40,8 +53,15 @@ const uploadEventFn = () => {
 };
 // #endregion  -------------------------------------
 
-onMounted(() => {
+onMounted(async () => {
   emitterComputed.value.on('emitUpload', uploadEventFn);
+  const [err, resp] = await getOnlineWordTypeOptionsApiFn();
+  if (err) {
+    console.error(err.msg || '拉去词库类型失败，请稍后刷新页面重试');
+  } else {
+    setWordTypeOptionsList(resp?.slice());
+  }
+  console.log('getOnlineWordTypeOptionsApiFn', err, resp);
   setTimeout(() => {
     loadingRef.value = false;
   }, 500);
@@ -62,18 +82,10 @@ onUnmounted(() => {
     <TopBottomView class="">
       <template #viewTopSlot>
         <a-segmented
-          v-model:value="thesaurusTypeRef"
-          :options="[
-            {
-              value: 'write_list',
-              label: '白名单',
-            },
-            {
-              value: 'black_list',
-              label: '黑名单',
-            },
-          ]"
+          :options="wordTypeOptionsListComputed"
+          :value="choosedWordTypeIndexComputed"
           block
+          @change="segmentedChangedFn"
         />
       </template>
 

@@ -1,52 +1,39 @@
 import type { VxeGridProps } from '@vben/plugins/src/vxe-table/types';
 
+import { OnlineConstSp } from '#/views/risk-control/online/_inner/defs/online-defs';
+
 const onLineColumns: VxeGridProps['columns'] = [
-  { type: 'checkbox', width: 60 },
   {
-    field: 'name',
-    title: '名称',
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kFiletype,
+    title: '词库ID',
     minWidth: 80,
   },
   {
-    field: 'nickName',
-    title: '昵称',
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kId,
+    title: '文件id',
+    minWidth: 80,
+  },
+  {
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kRawFilename,
+    title: '文件名称',
     minWidth: 130,
   },
   {
-    field: 'avatar',
-    title: '头像',
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUserName,
+    title: '上传人',
     slots: { default: 'avatar' },
     minWidth: 80,
   },
   {
-    field: 'deptName',
-    title: '部门',
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUpdateDt,
+    title: '上传时间',
     minWidth: 120,
-  },
-  {
-    field: 'phonenumber',
-    title: '手机号',
-    formatter({ cellValue }) {
-      return cellValue || '暂无';
-    },
-    minWidth: 120,
-  },
-  {
-    field: 'status',
-    title: '状态',
-    slots: { default: 'status' },
-    minWidth: 100,
-  },
-  {
-    field: 'createTime',
-    title: '创建时间',
-    minWidth: 150,
   },
   {
     field: 'action',
     fixed: 'right',
     slots: { default: 'action' },
-    title: '操作',
+    title: '功能',
     resizable: false,
     width: 180,
   },

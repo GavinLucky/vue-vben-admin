@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { useTableHooks } from '#/views/risk-control/online/_inner/sub-views/_inner/table-hooks';
-
+import { useTableHooks } from './table-view/_inner/table-hooks';
 import OnlineLogsTableViewComp from './table-view/online-logs-table-view.vue';
 import OnlineVerListTableViewComp from './table-view/online-verlist-table-view.vue';
 

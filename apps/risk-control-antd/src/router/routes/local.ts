@@ -2,6 +2,8 @@ import type { RouteRecordStringComponent } from '@vben/types';
 
 import { $t } from '@vben/locales';
 
+import devRoutes from '#/router/routes/modules/dev.route';
+
 /**
  * 该文件放非后台返回的路由 比如个人中心 等需要跳转显示的页面
  */
@@ -177,12 +179,12 @@ export const localMenuList: RouteRecordStringComponent[] = [
       title: 'page.dashboard.title',
     },
     name: 'Dashboard',
-    path: '/',
-    redirect: '/analytics',
+    path: '/dashboard',
+    redirect: '/dashboard/analytics',
     children: [
       {
         name: 'Analytics',
-        path: '/analytics',
+        path: 'analytics',
         component: '/dashboard/analytics/index',
         meta: {
           affixTab: true,
@@ -192,7 +194,7 @@ export const localMenuList: RouteRecordStringComponent[] = [
       },
       {
         name: 'Workspace',
-        path: '/workspace',
+        path: 'workspace',
         component: '/dashboard/workspace/index',
         meta: {
           icon: 'carbon:workspace',
@@ -234,5 +236,6 @@ export const localMenuList: RouteRecordStringComponent[] = [
   //   ],
   // },
   ...profileRoute,
+  ...devRoutes,
   ...otherLinksMenuList,
 ];

@@ -11,6 +11,7 @@
     "build": "pnpm vite build --mode production",
     "build:analyze": "pnpm vite build --mode analyze",
     "dev": "pnpm vite --mode development",
+    "dev:local": "pnpm vite --mode development.local",
     "dev:prod": "pnpm vite --mode production",
     "preview": "vite preview --port 5600",
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
