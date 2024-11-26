@@ -40,3 +40,7 @@ export function getDiffWithOnlineWordsVersionApi(params: { uploadId: number }) {
     del: string[];
   }>('get', '/ugc/words/diff', params, {});
 }
+
+// export function getWordFileDownloadUrlApiFn(params:{uploadId}){
+//   return doRequestFn<>('get','/ugc/words/download',params,{})
+// }

@@ -56,6 +56,10 @@ const getDiffWithOnlineWordsVersionApiFn = (uploadId: number) => {
   return getDiffWithOnlineWordsVersionApi({ uploadId });
 };
 
+// const getWordFileDownloadUrlApiFn = (uploadId: number) => {
+//   return getWordFileDownloadUrlApiFn({ uploadId });
+// };
+
 export function useOnlineRequest() {
   return {
     getOnlineWordTypeOptionsApiFn,

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
+import { useAppConfig } from '@vben/hooks';
 import { ArcticonsMgrOnline, HugeiconFileExport } from '@vben/icons';
 
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { downloadByUrl } from '#/utils/file/download';
 import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
@@ -25,6 +27,8 @@ const { getUploadedOnlineWordsListApiFn } = useOnlineRequest();
 const uploadBtnClickFn = () => {
   emitterComputed.value.emit('emitUpload');
 };
+const { rgApiUrl: rgUrl } = useAppConfig(import.meta.env, import.meta.env.PROD);
+
 const gridOptions: VxeGridProps = {
   checkboxConfig: {
     // 高亮
@@ -123,7 +127,13 @@ const releaseBtnClickFn = async (row: Record<any, any>) => {
   console.log('releaseBtnClickFn', row);
   emitterComputed.value.emit('emitOnlineReleaseAction', row);
 };
-
+const downloadWordFileFn = (row: Record<any, any>) => {
+  const url = `${rgUrl}/ugc/words/download?uploadId=${row.id}`;
+  downloadByUrl({
+    url,
+    target: '_blank',
+  });
+};
 const [BasicTable, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
@@ -181,7 +191,11 @@ defineExpose({
           </a-tooltip>
           <a-tooltip>
             <template #title>导出</template>
-            <a-button shape="circle" size="small">
+            <a-button
+              shape="circle"
+              size="small"
+              @click="downloadWordFileFn(row)"
+            >
               <template #icon>
                 <HugeiconFileExport class="h-full w-full p-1" />
               </template>
