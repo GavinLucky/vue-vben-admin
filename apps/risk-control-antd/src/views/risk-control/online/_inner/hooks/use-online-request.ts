@@ -1,5 +1,7 @@
 import { doUploadRequestFn } from '#/api/rg-modules/base-request';
 import {
+  doReleaseVersionApi,
+  getDiffWithOnlineWordsVersionApi,
   getOnlineReleaseLogsApi,
   getOnlineWordTypeOptionsApi,
   getUploadedOnlineWordsListApi,
@@ -42,11 +44,25 @@ const uploadWordFileApiFn = (
     remark,
   } as any);
 };
+
+const doReleaseVersionApiFn = (uploadId: number, reason: string) => {
+  return doReleaseVersionApi({
+    uploadId,
+    remark: reason,
+  });
+};
+
+const getDiffWithOnlineWordsVersionApiFn = (uploadId: number) => {
+  return getDiffWithOnlineWordsVersionApi({ uploadId });
+};
+
 export function useOnlineRequest() {
   return {
     getOnlineWordTypeOptionsApiFn,
     getUploadedOnlineWordsListApiFn,
     getOnlineReleaseLogsApiFn,
     uploadWordFileApiFn,
+    doReleaseVersionApiFn,
+    getDiffWithOnlineWordsVersionApiFn,
   };
 }

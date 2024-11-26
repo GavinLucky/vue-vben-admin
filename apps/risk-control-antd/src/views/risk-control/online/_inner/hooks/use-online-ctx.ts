@@ -13,9 +13,7 @@ export const { setupStore: setUpOnlineCtx, useStore: useOnlineCtx } =
     // #region 词库类型相关
     // =================================================
     /** 当前选中的词谱类型*/
-    const choosedWordTypeIndexRef = ref<OnlineSp.Commom.wordsType | undefined>(
-      undefined,
-    );
+    const choosedWordTypeIndexRef = ref<'' | OnlineSp.Commom.wordsType>('');
     const choosedWordTypeIndexComputed = computed(
       () => choosedWordTypeIndexRef.value,
     );

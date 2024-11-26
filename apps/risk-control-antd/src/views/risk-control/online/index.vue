@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
 import BasePageView from '#/component/pages/base-page.vue';
 import TopBottomView from '#/component/pages/top-bottom-view.vue';
 import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
 import { setUpOnlineCtx } from './_inner/hooks/use-online-ctx';
+import OnlineReleaseModalComp from './_inner/sub-views/online-releae-modal/online-release-modal.vue';
 import ThesaurusActionsComp from './_inner/sub-views/thesaurus-actions.vue';
 import UploadThesaurusDrawer from './_inner/sub-views/upload-thesaurus-drawer/upload-thesaurus-drawer.vue';
 
@@ -44,6 +45,12 @@ const [UploadDrawer, uploadDrawerApi] = useVbenDrawer({
 });
 
 // #endregion  -------------------------------------
+// #region 上线 modal
+// =================================================
+const [ConnectOnlineReleaseModal, onlineReleaseModalMethod] = useVbenModal({
+  connectedComponent: OnlineReleaseModalComp,
+});
+// #endregion  -------------------------------------
 
 // #region emit event
 // =================================================
@@ -51,10 +58,16 @@ const uploadEventFn = () => {
   console.log('uploadEventFn');
   uploadDrawerApi.open();
 };
+const onlineReleaseActionFn = (row) => {
+  console.log('onlineReleaseActionFn', row);
+  onlineReleaseModalMethod.setData(row);
+  onlineReleaseModalMethod.open();
+};
 // #endregion  -------------------------------------
 
 onMounted(async () => {
   emitterComputed.value.on('emitUpload', uploadEventFn);
+  emitterComputed.value.on('emitOnlineReleaseAction', onlineReleaseActionFn);
   const [err, resp] = await getOnlineWordTypeOptionsApiFn();
   if (err) {
     console.error(err.msg || '拉去词库类型失败，请稍后刷新页面重试');
@@ -69,6 +82,7 @@ onMounted(async () => {
 onUnmounted(() => {
   console.log('RCOnlineIndex unmounted');
   emitterComputed.value.off('emitUpload', uploadEventFn);
+  emitterComputed.value.off('emitOnlineReleaseAction', onlineReleaseActionFn);
 });
 </script>
 
@@ -103,6 +117,7 @@ onUnmounted(() => {
 
     <div class="h-0">
       <UploadDrawer />
+      <ConnectOnlineReleaseModal />
     </div>
   </BasePageView>
 </template>

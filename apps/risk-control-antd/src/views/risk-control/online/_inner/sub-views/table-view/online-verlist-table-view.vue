@@ -119,6 +119,11 @@ const formOptions: VbenFormProps = {
     'sm:max-md:max-w-[520px]  sm:max-md:m-auto md:w-full grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4',
 };
 
+const releaseBtnClickFn = async (row: Record<any, any>) => {
+  console.log('releaseBtnClickFn', row);
+  emitterComputed.value.emit('emitOnlineReleaseAction', row);
+};
+
 const [BasicTable, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
@@ -154,17 +159,21 @@ defineExpose({
             <a-tag v-if="row.releaseStatus === 2" color="success">
               当前线上版本
             </a-tag>
-            <a-tag v-if="row[column.field] === 1" color="processing">
+            <a-tag v-if="row.releaseStatus === 1" color="processing">
               正在发布版本
             </a-tag>
           </div>
         </div>
       </template>
-      <template #action="">
+      <template #action="{ row }">
         <div class="flex w-full flex-row items-center justify-evenly">
           <a-tooltip>
             <template #title>上线</template>
-            <a-button shape="circle" size="small">
+            <a-button
+              shape="circle"
+              size="small"
+              @click="releaseBtnClickFn(row)"
+            >
               <template #icon>
                 <ArcticonsMgrOnline class="h-full w-full p-1" />
               </template>

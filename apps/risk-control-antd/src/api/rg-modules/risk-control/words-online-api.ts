@@ -26,3 +26,17 @@ export function getOnlineReleaseLogsApi(
     total: number;
   }>('get', '/ugc/words/releaseLog', params, {});
 }
+
+export function doReleaseVersionApi(params: {
+  remark: string;
+  uploadId: number;
+}) {
+  return doRequestFn<any>('post', '/ugc/words/release', params, {});
+}
+
+export function getDiffWithOnlineWordsVersionApi(params: { uploadId: number }) {
+  return doRequestFn<{
+    add: string[];
+    del: string[];
+  }>('get', '/ugc/words/diff', params, {});
+}
