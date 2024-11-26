@@ -1,3 +1,4 @@
+import { doUploadRequestFn } from '#/api/rg-modules/base-request';
 import {
   getOnlineReleaseLogsApi,
   getOnlineWordTypeOptionsApi,
@@ -29,10 +30,23 @@ const getOnlineReleaseLogsApiFn = (
     pageSize,
   });
 };
+
+const uploadWordFileApiFn = (
+  file: Blob,
+  wordstype: OnlineSp.Commom.wordsType,
+  remark: string = '',
+) => {
+  return doUploadRequestFn('/ugc/words/upload', {
+    file,
+    filetype: wordstype,
+    remark,
+  } as any);
+};
 export function useOnlineRequest() {
   return {
     getOnlineWordTypeOptionsApiFn,
     getUploadedOnlineWordsListApiFn,
     getOnlineReleaseLogsApiFn,
+    uploadWordFileApiFn,
   };
 }

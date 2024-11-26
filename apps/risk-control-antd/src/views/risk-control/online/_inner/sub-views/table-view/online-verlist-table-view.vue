@@ -119,12 +119,17 @@ const formOptions: VbenFormProps = {
     'sm:max-md:max-w-[520px]  sm:max-md:m-auto md:w-full grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4',
 };
 
-const [BasicTable] = useVbenVxeGrid({
+const [BasicTable, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
   gridEvents: {
     // checkboxChange: tableCheckboxEvent(checked),
     // checkboxAll: tableCheckboxEvent(checked),
+  },
+});
+defineExpose({
+  refeshListFn: () => {
+    gridApi.reload();
   },
 });
 </script>

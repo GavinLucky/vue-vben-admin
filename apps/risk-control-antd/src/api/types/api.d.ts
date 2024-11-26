@@ -228,11 +228,11 @@ declare namespace RgApi {
 
   namespace Online {
     interface IGetUploadedWordsFilesReq extends Pagination.IPageQuery {
-      fileType: OnlineSp.Commom.wordsType;
+      filetype: OnlineSp.Commom.wordsType;
     }
 
     interface IGetWordsRelesedLogsReq extends Pagination.IPageQuery {
-      fileType: OnlineSp.Commom.wordsType;
+      filetype: OnlineSp.Commom.wordsType;
     }
   }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
+import { getRefCompFn } from '#/utils/components-utils';
 import { OnlineConstSp } from '#/views/risk-control/online/_inner/defs/online-defs';
 import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 
@@ -12,8 +13,10 @@ defineOptions({
   name: 'ThesaurusActionsComp',
 });
 const { onLineColumns, onlineLogsColumns } = useTableHooks();
-const { choosedWordTypeIndexComputed } = useOnlineCtx();
+const { choosedWordTypeIndexComputed, emitterComputed } = useOnlineCtx();
 const titlePerfixRef = ref('');
+const uploadedTableRef = ref<typeof OnlineVerListTableViewComp>();
+const onlineReleasedLogsTableRef = ref<typeof OnlineLogsTableViewComp>();
 watch(
   () => choosedWordTypeIndexComputed.value,
   (nV) => {
@@ -27,6 +30,36 @@ watch(
   },
 );
 const activeKey = ref('1');
+
+// #region emit func
+// =================================================
+const onEmitUploadFinishedFn = () => {
+  console.log('onEmitUploadFinished');
+  getRefCompFn(uploadedTableRef)?.refeshListFn();
+};
+const onEmitWordsTypeChanged = () => {
+  activeKey.value = '1';
+  getRefCompFn(uploadedTableRef)?.refeshListFn();
+};
+// #endregion  -------------------------------------
+
+onMounted(() => {
+  emitterComputed.value.on('onUploadFinshed', onEmitUploadFinishedFn);
+  emitterComputed.value.on('onWordsTypeChanged', onEmitWordsTypeChanged);
+  //   onWordsTypeChanged
+});
+onUnmounted(() => {
+  emitterComputed.value.off('onUploadFinshed', onEmitUploadFinishedFn);
+  emitterComputed.value.off('onWordsTypeChanged', onEmitWordsTypeChanged);
+});
+watch(
+  () => activeKey.value,
+  (nV) => {
+    if (nV === '2') {
+      getRefCompFn(onlineReleasedLogsTableRef)?.refeshListFn();
+    }
+  },
+);
 </script>
 
 <template>
@@ -48,11 +81,13 @@ const activeKey = ref('1');
     <div class="flex-1 overflow-y-hidden">
       <OnlineVerListTableViewComp
         v-show="activeKey === '1'"
+        ref="uploadedTableRef"
         :columns="onLineColumns"
         :title="titlePerfixRef"
       />
       <OnlineLogsTableViewComp
         v-show="activeKey === '2'"
+        ref="onlineReleasedLogsTableRef"
         :columns="onlineLogsColumns"
         :title="titlePerfixRef"
       />

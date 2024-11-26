@@ -13,24 +13,41 @@ export const { setupStore: setUpOnlineCtx, useStore: useOnlineCtx } =
     // #region 词库类型相关
     // =================================================
     /** 当前选中的词谱类型*/
-    const choosedWordTypeIndexRef = ref<OnlineSp.Commom.wordsType>('');
+    const choosedWordTypeIndexRef = ref<OnlineSp.Commom.wordsType | undefined>(
+      undefined,
+    );
     const choosedWordTypeIndexComputed = computed(
       () => choosedWordTypeIndexRef.value,
     );
     const setChoosedWordTypeIndex = (index: OnlineSp.Commom.wordsType) => {
-      choosedWordTypeIndexRef.value = index;
+      if (choosedWordTypeIndexRef.value !== index) {
+        choosedWordTypeIndexRef.value = index;
+        emitterComputed.value.emit('onWordsTypeChanged');
+      }
     };
     /** 词库类型选项列表*/
-    const wordTypeOptionsListRef = ref([]);
+    const wordTypeOptionsListRef = ref<
+      {
+        payload?: {
+          cnTitle: string;
+          wordsKey: string;
+        };
+        title?: string;
+        value: string;
+      }[]
+    >([]);
     const wordTypeOptionsListComputed = computed(
       () => wordTypeOptionsListRef.value,
     );
-    const setWordTypeOptionsList = (list: OnlineSp.Commom.wordsType[]) => {
+    const setWordTypeOptionsList = (
+      list: OnlineSp.Commom.wordsType[] | Record<any, any>[],
+    ) => {
       const [first] = list;
       if (first && isString(first)) {
         // 文本类型，转换成对象
         const formatList = list.map((ele) => {
-          const cnTitle = OnlineConstSp.wordsTypeLabelMap[ele];
+          const cnTitle =
+            OnlineConstSp.wordsTypeLabelMap[ele as OnlineSp.Commom.wordsType];
           const obj = {
             payload: {
               wordsKey: ele,
@@ -41,11 +58,12 @@ export const { setupStore: setUpOnlineCtx, useStore: useOnlineCtx } =
           };
           return obj;
         });
-        wordTypeOptionsListRef.value = formatList;
-        choosedWordTypeIndexRef.value = first;
+
+        wordTypeOptionsListRef.value = formatList as any;
+        setChoosedWordTypeIndex(first);
         return;
       }
-      wordTypeOptionsListRef.value = list;
+      wordTypeOptionsListRef.value = list as any;
     };
     // #endregion  -------------------------------------
 
