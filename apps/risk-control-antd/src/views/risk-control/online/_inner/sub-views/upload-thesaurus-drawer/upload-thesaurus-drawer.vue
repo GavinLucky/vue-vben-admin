@@ -130,6 +130,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           <a-upload-dragger
             :before-upload="() => false"
             :file-list="value"
+            :max-count="1"
             :multiple="false"
             action=""
             class="w-full"

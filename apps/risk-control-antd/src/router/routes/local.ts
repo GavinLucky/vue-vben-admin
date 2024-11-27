@@ -172,12 +172,6 @@ const otherLinksMenuList: RouteRecordStringComponent[] = [
 export const localMenuList: RouteRecordStringComponent[] = [
   {
     component: 'BasicLayout',
-    name: '_/',
-    path: '/',
-    redirect: '/dashboard',
-  },
-  {
-    component: 'BasicLayout',
     meta: {
       order: 1,
       title: 'page.dashboard.title',
