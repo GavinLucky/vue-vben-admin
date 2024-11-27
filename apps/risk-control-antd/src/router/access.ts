@@ -13,8 +13,7 @@ import { message } from 'ant-design-vue';
 import { getAllMenusApi } from '#/api/rg-modules/core/menu-api';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
-
-import { localMenuList } from './routes/local';
+import { localMenuList } from '#/router/routes/local';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
@@ -22,22 +21,27 @@ const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 async function getFormatedMenuListFn() {
   return new Promise<RouteRecordStringComponent<string>[]>((resolve) => {
     setTimeout(async () => {
-      let tempMenuList: RgApi.Menu.IMenu[] = [];
-      // 后台返回路由/菜单
-      const [error, backMenuList] = await getAllMenusApi();
-      if (error) {
-        console.error('menulist loaderr', error);
-      } else {
-        tempMenuList = [...backMenuList];
-      }
-      // 转换为vben能用的路由
-      const vbenMenuList = backMenuToVbenMenu(tempMenuList);
-      // 特别注意 这里要深拷贝
-      const menuList = [...cloneDeep(localMenuList), ...vbenMenuList];
-      console.log('menuList', menuList);
-      setTimeout(() => {
+      try {
+        let tempMenuList: RgApi.Menu.IMenu[] = [];
+        // 后台返回路由/菜单
+        const [error, backMenuList] = await getAllMenusApi();
+        if (error) {
+          console.error('menulist loaderr', error);
+        } else {
+          tempMenuList = [...backMenuList];
+        }
+        // 转换为vben能用的路由
+        const vbenMenuList = backMenuToVbenMenu(tempMenuList);
+        // 特别注意 这里要深拷贝
+        const menuList = [...cloneDeep(localMenuList), ...vbenMenuList];
+        console.log('menuList', menuList);
+
         resolve(menuList);
-      }, 500);
+      } catch (_error) {
+        console.errer(_error);
+        // eslint-disable-next-line no-debugger,no-restricted-syntax
+        debugger;
+      }
     });
   });
 }

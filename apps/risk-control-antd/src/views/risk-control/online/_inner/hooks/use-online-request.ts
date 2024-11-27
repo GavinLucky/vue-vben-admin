@@ -5,6 +5,7 @@ import {
   getOnlineReleaseLogsApi,
   getOnlineWordTypeOptionsApi,
   getUploadedOnlineWordsListApi,
+  getWordFileDownloadUrlApi,
 } from '#/api/rg-modules/risk-control/words-online-api';
 
 const getOnlineWordTypeOptionsApiFn = () => {
@@ -55,10 +56,10 @@ const doReleaseVersionApiFn = (uploadId: number, reason: string) => {
 const getDiffWithOnlineWordsVersionApiFn = (uploadId: number) => {
   return getDiffWithOnlineWordsVersionApi({ uploadId });
 };
-
-// const getWordFileDownloadUrlApiFn = (uploadId: number) => {
-//   return getWordFileDownloadUrlApiFn({ uploadId });
-// };
+/** 获取文件下载地址tokenId */
+const getWordFileDownloadUrlApiFn = (uploadId: number) => {
+  return getWordFileDownloadUrlApi({ uploadId });
+};
 
 export function useOnlineRequest() {
   return {
@@ -68,5 +69,6 @@ export function useOnlineRequest() {
     uploadWordFileApiFn,
     doReleaseVersionApiFn,
     getDiffWithOnlineWordsVersionApiFn,
+    getWordFileDownloadUrlApiFn,
   };
 }

@@ -23,7 +23,8 @@ const { columns = [], title = '' } = defineProps<IProps>();
 
 const { emitterComputed, choosedWordTypeIndexComputed } = useOnlineCtx();
 
-const { getUploadedOnlineWordsListApiFn } = useOnlineRequest();
+const { getUploadedOnlineWordsListApiFn, getWordFileDownloadUrlApiFn } =
+  useOnlineRequest();
 const uploadBtnClickFn = () => {
   emitterComputed.value.emit('emitUpload');
 };
@@ -61,7 +62,7 @@ const gridOptions: VxeGridProps = {
           list.push({ id: i, name: i, user: i });
         }
         const [err, resp] = await getUploadedOnlineWordsListApiFn(
-          choosedWordTypeIndexComputed.value,
+          choosedWordTypeIndexComputed!.value,
           page.currentPage,
           page.pageSize,
         );
@@ -127,12 +128,23 @@ const releaseBtnClickFn = async (row: Record<any, any>) => {
   console.log('releaseBtnClickFn', row);
   emitterComputed.value.emit('emitOnlineReleaseAction', row);
 };
-const downloadWordFileFn = (row: Record<any, any>) => {
-  const url = `${rgUrl}/ugc/words/download?uploadId=${row.id}`;
-  downloadByUrl({
-    url,
-    target: '_blank',
-  });
+const downloadWordFileFn = async (row: Record<any, any>) => {
+  row.loading = true;
+
+  const [err, urlTokenResp] = await getWordFileDownloadUrlApiFn(row.id);
+  if (err) {
+    message.error(err.msg || '获取下载链接失败');
+    row.loading = false;
+  } else {
+    const { tokenId } = urlTokenResp;
+    const url = `${rgUrl}/ugc/words/downloadFile?tokenId=${tokenId}`;
+    downloadByUrl({
+      url,
+      target: '_blank',
+    });
+    message.success('已经添加浏览器下载');
+  }
+  row.loading = false;
 };
 const [BasicTable, gridApi] = useVbenVxeGrid({
   formOptions,
@@ -192,6 +204,7 @@ defineExpose({
           <a-tooltip>
             <template #title>导出</template>
             <a-button
+              :loading="row.loading"
               shape="circle"
               size="small"
               @click="downloadWordFileFn(row)"

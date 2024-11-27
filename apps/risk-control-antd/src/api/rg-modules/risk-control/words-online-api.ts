@@ -41,6 +41,11 @@ export function getDiffWithOnlineWordsVersionApi(params: { uploadId: number }) {
   }>('get', '/ugc/words/diff', params, {});
 }
 
-// export function getWordFileDownloadUrlApiFn(params:{uploadId}){
-//   return doRequestFn<>('get','/ugc/words/download',params,{})
-// }
+export function getWordFileDownloadUrlApi(params: { uploadId: number }) {
+  return doRequestFn<{ tokenId: string }>(
+    'get',
+    '/ugc/words/download',
+    params,
+    {},
+  );
+}
