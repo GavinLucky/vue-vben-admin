@@ -2,8 +2,6 @@ import type { RouteRecordStringComponent } from '@vben/types';
 
 import { $t } from '@vben/locales';
 
-import devRoutes from '#/router/routes/modules/dev.route';
-
 /**
  * 该文件放非后台返回的路由 比如个人中心 等需要跳转显示的页面
  */
@@ -43,7 +41,7 @@ const profileRoute: RouteRecordStringComponent[] = [
       title: 'oss配置',
     },
     name: 'OssConfig',
-    path: '/',
+    path: '/system',
     redirect: '/system/oss-config',
     children: [
       {
@@ -67,7 +65,7 @@ const profileRoute: RouteRecordStringComponent[] = [
       title: '修改生成配置',
     },
     name: 'GenConfig',
-    path: '/',
+    path: '/code-gen',
     redirect: '/code-gen/edit',
     children: [
       {
@@ -91,7 +89,7 @@ const profileRoute: RouteRecordStringComponent[] = [
       title: '分配角色',
     },
     name: 'RoleAssign',
-    path: '/',
+    path: '/system',
     redirect: '/system/role-assign',
     children: [
       {
@@ -174,8 +172,14 @@ const otherLinksMenuList: RouteRecordStringComponent[] = [
 export const localMenuList: RouteRecordStringComponent[] = [
   {
     component: 'BasicLayout',
+    name: '_/',
+    path: '/',
+    redirect: '/dashboard',
+  },
+  {
+    component: 'BasicLayout',
     meta: {
-      order: -1,
+      order: 1,
       title: 'page.dashboard.title',
     },
     name: 'Dashboard',
@@ -190,6 +194,7 @@ export const localMenuList: RouteRecordStringComponent[] = [
           affixTab: true,
           icon: 'lucide:area-chart',
           title: 'page.dashboard.analytics',
+          order: 1,
         },
       },
       {
@@ -199,19 +204,9 @@ export const localMenuList: RouteRecordStringComponent[] = [
         meta: {
           icon: 'carbon:workspace',
           title: 'page.dashboard.workspace',
+          order: 2,
         },
       },
-      // {
-      //   name: 'VbenDocument',
-      //   path: '/vben-admin/document',
-      //   component: 'IFrameView',
-      //   meta: {
-      //     icon: 'lucide:book-open-text',
-      //     iframeSrc: 'https://dapdap.top',
-      //     keepAlive: true,
-      //     title: $t('demos.vben.document'),
-      //   },
-      // },
     ],
   },
   // {
@@ -236,6 +231,6 @@ export const localMenuList: RouteRecordStringComponent[] = [
   //   ],
   // },
   ...profileRoute,
-  ...devRoutes,
+  // ...devRoutes,
   ...otherLinksMenuList,
 ];

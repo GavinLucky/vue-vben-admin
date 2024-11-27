@@ -38,7 +38,7 @@ async function getFormatedMenuListFn() {
 
         resolve(menuList);
       } catch (_error) {
-        console.errer(_error);
+        console.error(_error);
         // eslint-disable-next-line no-debugger,no-restricted-syntax
         debugger;
       }
