@@ -3,7 +3,7 @@ import type { Recordable, UserInfo } from '@vben/types';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
+import { LOGIN_PATH } from '@vben/constants';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
 import { notification } from 'ant-design-vue';
@@ -83,7 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
         } else {
           onSuccess
             ? await onSuccess?.()
-            : await router.push(userInfo?.homePath || DEFAULT_HOME_PATH);
+            : await router.push(userInfo?.homePath || '/dashboard/analytics');
         }
         setDoLogoutStatus(false);
         if (userInfo?.realName) {
