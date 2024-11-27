@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
+import { EllipsisText } from '@vben/common-ui';
 import { useAppConfig } from '@vben/hooks';
-import { ArcticonsMgrOnline, HugeiconFileExport } from '@vben/icons';
+import { ArcticonsMgrOnline, Copy, HugeiconFileExport } from '@vben/icons';
 
+import { useClipboard } from '@vueuse/core';
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
@@ -22,7 +24,7 @@ interface IProps {
 const { columns = [], title = '' } = defineProps<IProps>();
 
 const { emitterComputed, choosedWordTypeIndexComputed } = useOnlineCtx();
-
+const { copy, copied, isSupported } = useClipboard();
 const { getUploadedOnlineWordsListApiFn, getWordFileDownloadUrlApiFn } =
   useOnlineRequest();
 const uploadBtnClickFn = () => {
@@ -146,6 +148,16 @@ const downloadWordFileFn = async (row: Record<any, any>) => {
   }
   row.loading = false;
 };
+const copyBtnClickFn = async (row: Record<any, any>) => {
+  console.log('row', row);
+  await copy(row.remark);
+  if (copied.value) {
+    message.success('已成功复制剪贴板');
+  } else {
+    message.error('复制失败');
+  }
+};
+
 const [BasicTable, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
@@ -184,6 +196,31 @@ defineExpose({
             <a-tag v-if="row.releaseStatus === 1" color="processing">
               正在发布版本
             </a-tag>
+          </div>
+        </div>
+      </template>
+
+      <template #default_slot_remark="{ row, column }">
+        <div class="w-full max-w-full overflow-x-hidden">
+          <div class="flex flex-row items-center justify-between">
+            <div class="flex-1 overflow-x-hidden">
+              <EllipsisText :line="1" :tooltip-max-width="800" class="w-full">
+                {{ row[column.field] }}
+              </EllipsisText>
+            </div>
+            <div class="flex flex-none flex-row items-center justify-center">
+              <a-button
+                v-if="isSupported"
+                shape="circle"
+                size="small"
+                type="link"
+                @click="copyBtnClickFn(row)"
+              >
+                <template #icon>
+                  <Copy class="h-full w-full p-1" />
+                </template>
+              </a-button>
+            </div>
           </div>
         </div>
       </template>

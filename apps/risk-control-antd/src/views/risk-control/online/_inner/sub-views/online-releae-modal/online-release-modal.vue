@@ -124,10 +124,12 @@ const [Modal, modalApi] = useVbenModal({
           width: '120px',
           color: 'red',
         }"
-        :span="3"
+        :span="1"
         label="Del"
       >
-        <span>{{ diffDetailRef.del.join(',') }}</span>
+        <div class="flex flex-row items-center justify-center">
+          <span>{{ diffDetailRef.del.join(',') }}</span>
+        </div>
       </a-descriptions-item>
     </a-descriptions>
     <a-divider />

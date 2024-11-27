@@ -20,15 +20,24 @@ const onLineColumns: VxeGridProps['columns'] = [
     slots: { default: 'rawFilename' },
   },
   {
-    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUserName,
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kReleaseUserName,
     title: '上传人',
-    slots: { default: 'avatar' },
+    // slots: { default: 'avatar' },
     minWidth: 80,
   },
   {
     field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUpdateDt,
     title: '上传时间',
     minWidth: 120,
+  },
+  {
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kRemark,
+    title: '备注',
+    minWidth: 200,
+    // overflow: 'ellipsis',
+    slots: {
+      default: `default_slot_${OnlineConstSp.Enums.UploadWordsFileItemEnum.kRemark}`,
+    },
   },
   {
     field: 'action',
@@ -59,20 +68,23 @@ const onlineLogsColumns = [
     minWidth: 80,
   },
   {
-    field: 'remark',
-    title: '上线说明',
-    overflow: 'ellipsis',
-    // slots: { default: 'status' },
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kRemark,
+    title: '备注',
     minWidth: 200,
+    overflow: 'hidden',
+    showOverflow: false,
+    slots: {
+      default: `default_slot_${OnlineConstSp.Enums.UploadWordsFileItemEnum.kRemark}`,
+    },
   },
-  {
-    field: 'action',
-    fixed: 'right',
-    slots: { default: 'action' },
-    title: '功能',
-    resizable: false,
-    width: 90,
-  },
+  // {
+  //   field: 'action',
+  //   fixed: 'right',
+  //   slots: { default: 'action' },
+  //   title: '功能',
+  //   resizable: false,
+  //   width: 90,
+  // },
 ];
 export function useTableHooks() {
   return {

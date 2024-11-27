@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '#/adapter/form';
 
-import { NotebookTabs } from '@vben/icons';
+import { EllipsisText } from '@vben/common-ui';
+import { Copy, NotebookTabs } from '@vben/icons';
 
+import { useClipboard } from '@vueuse/core';
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
@@ -20,7 +22,7 @@ const { choosedWordTypeIndexComputed } = useOnlineCtx();
 const { getOnlineReleaseLogsApiFn } = useOnlineRequest();
 // eslint-disable-next-line vue/define-macros-order
 const { columns = [], title = '' } = defineProps<IProps>();
-
+const { copy, copied, isSupported } = useClipboard();
 const gridOptions: VxeGridProps = {
   checkboxConfig: {
     // 高亮
@@ -72,6 +74,15 @@ const gridOptions: VxeGridProps = {
   },
 };
 
+const copyBtnClickFn = async (row: Record<any, any>) => {
+  // console.log('row', row, copied.value);
+  await copy(row.remark);
+  if (copied.value) {
+    message.success('已成功复制剪贴板');
+  } else {
+    message.error('复制失败');
+  }
+};
 const formOptions: VbenFormProps = {
   // 默认展开
   collapsed: false,
@@ -86,11 +97,6 @@ const formOptions: VbenFormProps = {
       fieldName: 'action_user',
       label: '上线人',
     },
-    {
-      component: 'ASelect',
-      fieldName: 'online_status',
-      label: '上线状态',
-    },
   ],
   resetButtonOptions: {
     size: 'small',
@@ -104,7 +110,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: false,
   // 中屏一行显示2个，小屏一行显示1个
   wrapperClass:
-    'sm:max-md:max-w-[520px]  sm:max-md:m-auto md:w-full grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4',
+    'sm:max-md:max-w-[520px]  sm:max-md:m-auto md:w-full grid-cols-1 md:grid-cols-2  lg:grid-cols-3 ',
 };
 
 const [BasicTable, tableApi] = useVbenVxeGrid({
@@ -133,6 +139,30 @@ defineExpose({
 
       <template #avatar=""> </template>
       <template #status=""> </template>
+      <template #default_slot_remark="{ row, column }">
+        <div class="w-full max-w-full overflow-x-hidden">
+          <div class="flex flex-row items-center justify-between">
+            <div class="flex-1 overflow-x-hidden">
+              <EllipsisText :line="1" :tooltip-max-width="800" class="w-full">
+                {{ row[column.field] }}
+              </EllipsisText>
+            </div>
+            <div class="flex flex-none flex-row items-center justify-center">
+              <a-button
+                v-if="isSupported"
+                shape="circle"
+                size="small"
+                type="link"
+                @click="copyBtnClickFn(row)"
+              >
+                <template #icon>
+                  <Copy class="h-full w-full p-1" />
+                </template>
+              </a-button>
+            </div>
+          </div>
+        </div>
+      </template>
       <template #action="">
         <a-tooltip>
           <template #title>查看详情</template>
