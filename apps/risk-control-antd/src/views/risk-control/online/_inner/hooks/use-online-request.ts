@@ -15,22 +15,26 @@ const getUploadedOnlineWordsListApiFn = (
   wordType: OnlineSp.Commom.wordsType,
   pageNum: number,
   pageSize: number = 10,
+  filterMap: any = {},
 ) => {
   return getUploadedOnlineWordsListApi({
     pageNum,
     pageSize,
     filetype: wordType,
+    ...filterMap,
   });
 };
 const getOnlineReleaseLogsApiFn = (
   wordType: OnlineSp.Commom.wordsType,
   pageIndex: number,
   pageSize: number,
+  filtMap: Record<any, any> = {},
 ) => {
   return getOnlineReleaseLogsApi({
     filetype: wordType,
     pageNum: pageIndex,
     pageSize,
+    ...filtMap,
   });
 };
 

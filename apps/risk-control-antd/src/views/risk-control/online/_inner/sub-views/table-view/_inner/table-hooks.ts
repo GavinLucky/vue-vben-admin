@@ -28,7 +28,7 @@ const onLineColumns: VxeGridProps['columns'] = [
     minWidth: 80,
   },
   {
-    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUpdateDt,
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kCreateDt,
     title: '上传时间',
     minWidth: 120,
   },
@@ -71,7 +71,7 @@ const onlineLogsColumns = [
   },
   {
     field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kRemark,
-    title: '备注',
+    title: '上线说明',
     minWidth: 200,
     overflow: 'hidden',
     showOverflow: false,

@@ -10,7 +10,7 @@ export function getOnlineWordTypeOptionsApi() {
 }
 
 export function getUploadedOnlineWordsListApi(
-  params: RgApi.Online.IGetUploadedWordsFilesReq,
+  params: Record<any, any> & RgApi.Online.IGetUploadedWordsFilesReq,
 ) {
   return doRequestFn<{
     rows: OnlineSp.RawItem.IUploadWordsFileItem[];
@@ -19,7 +19,7 @@ export function getUploadedOnlineWordsListApi(
 }
 
 export function getOnlineReleaseLogsApi(
-  params: RgApi.Online.IGetWordsRelesedLogsReq,
+  params: Record<any, any> & RgApi.Online.IGetWordsRelesedLogsReq,
 ) {
   return doRequestFn<{
     rows: OnlineSp.RawItem.IReleaseLogItem[];

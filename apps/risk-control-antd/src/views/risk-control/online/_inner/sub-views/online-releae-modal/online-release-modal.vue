@@ -116,7 +116,10 @@ const [Modal, modalApi] = useVbenModal({
         label="Add"
       >
         <div class="flex flex-row items-center justify-center">
-          <span>{{ diffDetailRef.add.join(',') }}</span>
+          <span v-if="diffDetailRef.add?.length > 0">{{
+            diffDetailRef.add.join(',')
+          }}</span>
+          <span v-else class="text-[#aaa]">无差异内容</span>
         </div>
       </a-descriptions-item>
       <a-descriptions-item
@@ -128,7 +131,10 @@ const [Modal, modalApi] = useVbenModal({
         label="Del"
       >
         <div class="flex flex-row items-center justify-center">
-          <span>{{ diffDetailRef.del.join(',') }}</span>
+          <span v-if="diffDetailRef.del?.length > 0">{{
+            diffDetailRef.del.join(',') || '暂无差异'
+          }}</span>
+          <span v-else class="text-[#aaa]">无差异内容</span>
         </div>
       </a-descriptions-item>
     </a-descriptions>

@@ -9,6 +9,7 @@ import { useClipboard } from '@vueuse/core';
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { filterValidValueMap } from '#/utils/array-utils';
 import { downloadByUrl } from '#/utils/file/download';
 import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
@@ -59,14 +60,16 @@ const gridOptions: VxeGridProps = {
         // 部门树选择处理
         // debugger;
         console.log('formValue', page, formValues);
-        const list = [];
-        for (let i = 0; i < page.pageSize; i++) {
-          list.push({ id: i, name: i, user: i });
-        }
+        // const list = [];
+        // for (let i = 0; i < page.pageSize; i++) {
+        //   list.push({ id: i, name: i, user: i });
+        // }
+        const filter = filterValidValueMap(formValues);
         const [err, resp] = await getUploadedOnlineWordsListApiFn(
           choosedWordTypeIndexComputed!.value,
           page.currentPage,
           page.pageSize,
+          filter,
         );
         if (err) {
           message.error(err.msg || '获取失败，请稍后重试');
@@ -102,14 +105,22 @@ const formOptions: VbenFormProps = {
     },
     {
       component: 'AInput',
-      fieldName: 'update_user',
+      fieldName: 'userName',
       label: '上传人',
     },
     {
       component: 'AInput',
-      fieldName: 'file_name',
+      fieldName: 'rawFilename',
       label: '文件名称',
     },
+  ],
+  fieldMappingTime: [
+    [
+      'time',
+      ['params[beginTime]', 'params[endTime]'],
+      // ['YYYY-MM-DD', 'YYYY-MM-DD'],
+      ['YYYY-MM-DD 00:00:00', 'YYYY-MM-DD 23:59:59'],
+    ],
   ],
   resetButtonOptions: {
     size: 'small',

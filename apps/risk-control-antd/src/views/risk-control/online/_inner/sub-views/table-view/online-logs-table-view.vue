@@ -8,6 +8,7 @@ import { useClipboard } from '@vueuse/core';
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { filterValidValueMap } from '#/utils/array-utils';
 import { useOnlineCtx } from '#/views/risk-control/online/_inner/hooks/use-online-ctx';
 import { useOnlineRequest } from '#/views/risk-control/online/_inner/hooks/use-online-request';
 
@@ -46,10 +47,12 @@ const gridOptions: VxeGridProps = {
         // 部门树选择处理
         // debugger;
         console.log('formValue', formValues);
+        const filter = filterValidValueMap(formValues);
         const [err, resp] = await getOnlineReleaseLogsApiFn(
           choosedWordTypeIndexComputed.value,
           page.currentPage,
           page.pageSize,
+          filter,
         );
         console.log('getOnlineReleaseLogsApiFn', err, resp);
         if (err) {
@@ -94,9 +97,17 @@ const formOptions: VbenFormProps = {
     },
     {
       component: 'AInput',
-      fieldName: 'action_user',
+      fieldName: 'userName',
       label: '上线人',
     },
+  ],
+  fieldMappingTime: [
+    [
+      'time',
+      ['params[beginTime]', 'params[endTime]'],
+      // ['YYYY-MM-DD', 'YYYY-MM-DD'],
+      ['YYYY-MM-DD 00:00:00', 'YYYY-MM-DD 23:59:59'],
+    ],
   ],
   resetButtonOptions: {
     size: 'small',
