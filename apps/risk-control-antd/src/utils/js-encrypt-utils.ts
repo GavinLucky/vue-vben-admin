@@ -21,7 +21,7 @@ decryptor.setPrivateKey(rsaPrivateKey);
  */
 export function doEncrypt(txt: string) {
   // const encryptor = new JSEncrypt();
-  // encryptor.setPublicKey(publicKey); // 设置公钥
+  // encryptor.setPublicKey(rsaPublicKey); // 设置公钥
   return encryptor.encrypt(txt); // 对需要加密的数据进行加密
 }
 
@@ -31,5 +31,7 @@ export function doEncrypt(txt: string) {
  * @returns 解密后的数据
  */
 export function doDecrypt(txt: string) {
+  // const decryptor = new JSEncrypt();
+  // decryptor.setPrivateKey(rsaPrivateKey); // 设置私钥
   return decryptor.decrypt(txt);
 }
