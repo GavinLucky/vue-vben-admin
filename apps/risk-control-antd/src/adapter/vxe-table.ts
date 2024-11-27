@@ -65,3 +65,5 @@ setupVbenVxeTable({
 export { useVbenVxeGrid };
 
 export type * from '@vben/plugins/vxe-table';
+
+export { type VxeGridProps } from '@vben/plugins/vxe-table';

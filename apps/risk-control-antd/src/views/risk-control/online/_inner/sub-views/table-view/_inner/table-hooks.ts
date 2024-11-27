@@ -1,4 +1,6 @@
-import type { VxeGridProps } from '@vben/plugins/src/vxe-table/types';
+// import type { VxeGridProps } from '@vben/plugins/src/vxe-table/types';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { OnlineConstSp } from '#/views/risk-control/online/_inner/defs/online-defs';
 
@@ -20,7 +22,7 @@ const onLineColumns: VxeGridProps['columns'] = [
     slots: { default: 'rawFilename' },
   },
   {
-    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kReleaseUserName,
+    field: OnlineConstSp.Enums.UploadWordsFileItemEnum.kUserName,
     title: '上传人',
     // slots: { default: 'avatar' },
     minWidth: 80,
