@@ -29,18 +29,18 @@ const tokenTheme = computed(() => {
   };
 });
 onMounted(() => {
-  [...document.styleSheets].forEach((sheet) => {
-    try {
-      [...sheet.cssRules].forEach((rule) => {
-        if (rule instanceof CSSMediaRule) {
-          console.log(rule.conditionText);
-          console.log(rule);
-        }
-      });
-    } catch {
-      console.warn('Could not access stylesheet', sheet.href);
-    }
-  });
+  // [...document.styleSheets].forEach((sheet) => {
+  //   try {
+  //     [...sheet.cssRules].forEach((rule) => {
+  //       if (rule instanceof CSSMediaRule) {
+  //         console.log(rule.conditionText);
+  //         console.log(rule);
+  //       }
+  //     });
+  //   } catch {
+  //     console.warn('Could not access stylesheet', sheet.href);
+  //   }
+  // });
 });
 </script>
 
