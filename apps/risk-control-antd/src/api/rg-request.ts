@@ -24,7 +24,7 @@ import {
   encryptWithAes,
   generateAesKey,
 } from '#/utils/crypto-js-utils';
-import { doEncrypt } from '#/utils/js-encrypt-utils';
+import { doDecrypt, doEncrypt } from '#/utils/js-encrypt-utils';
 
 import { refreshTokenApi } from './core';
 
@@ -127,7 +127,15 @@ function createRequestClient(baseURL: string) {
         ['post', 'put'].includes(config.method?.toLowerCase() || '')
       ) {
         const aesKey = generateAesKey();
-        config.headers['encrypt-key'] = doEncrypt(encryptBase64(aesKey));
+        const base64AesKey = encryptBase64(aesKey);
+        const encoderAesKey = doEncrypt(base64AesKey);
+        if (!encoderAesKey) {
+          console.error('加密key生成失败 ');
+          // eslint-disable-next-line no-debugger,no-restricted-syntax
+          debugger;
+        }
+
+        config.headers['encrypt-key'] = encoderAesKey;
         // console.log('url path:', config.url, 'data', config.data);
         config.data =
           typeof config.data === 'object'
@@ -145,7 +153,7 @@ function createRequestClient(baseURL: string) {
       // 判断是否需要数据解密
       if (encryptKey) {
         /** RSA私钥解密 拿到解密秘钥的base64 */
-        const base64Str = doEncrypt(encryptKey);
+        const base64Str = doDecrypt(encryptKey);
         /** base64 解码 得到请求头的 AES 秘钥 */
         const aesSecret = decryptBase64(base64Str.toString());
         /** 使用aesKey解密 responseData */
