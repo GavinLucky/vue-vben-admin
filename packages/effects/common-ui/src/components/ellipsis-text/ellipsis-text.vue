@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { computed, type CSSProperties, ref, watchEffect } from 'vue';
+import {
+  computed,
+  type CSSProperties,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  useSlots,
+  watch,
+  watchEffect,
+} from 'vue';
 
 import { VbenTooltip } from '@vben-core/shadcn-ui';
 
@@ -65,14 +75,14 @@ const props = withDefaults(defineProps<Props>(), {
   tooltipOverlayStyle: () => ({ textAlign: 'justify' }),
 });
 const emit = defineEmits<{ expandChange: [boolean] }>();
-
+const slots = useSlots();
 const textMaxWidth = computed(() => {
   if (typeof props.maxWidth === 'number') {
     return `${props.maxWidth}px`;
   }
   return props.maxWidth;
 });
-const ellipsis = ref();
+const ellipsis = ref<Element | undefined>();
 const isExpand = ref(false);
 const defaultTooltipMaxWidth = ref();
 
@@ -93,6 +103,71 @@ function onExpand() {
 function handleExpand() {
   props.expand && onExpand();
 }
+
+const innerTextComputd = computed(() => {
+  const [firstItem] = slots.default?.() || [];
+  if (firstItem) {
+    return firstItem.children || '';
+  }
+  return '';
+});
+
+let resizeObserver: null | ResizeObserver = null;
+// 动态判断是否需要显示tooltip
+const needShowTooltipsRef = ref(false);
+const checkOverFlowFn = () => {
+  // console.log('checkover flow');
+  if (ellipsis.value) {
+    const { scrollWidth, scrollHeight, clientWidth, clientHeight } =
+      ellipsis.value;
+    // eslint-disable-next-line unicorn/prefer-ternary
+    if (props.line === 1) {
+      // 单行文本
+      needShowTooltipsRef.value = scrollWidth > clientWidth;
+    } else {
+      // 多行文本
+      needShowTooltipsRef.value = scrollHeight > clientHeight;
+    }
+    // console.log(
+    //   'Is content overflowing:',
+    //   scrollWidth,
+    //   scrollHeight,
+    //   clientWidth,
+    //   clientHeight,
+    // );
+  }
+};
+
+onMounted(() => {
+  // console.log('mounted', innerTextComputd.value);
+  resizeObserver = new ResizeObserver(() => {
+    checkOverFlowFn();
+  });
+  // checkOverFlowFn();
+  resizeObserver.observe(ellipsis.value as Element);
+});
+
+watch(
+  () => innerTextComputd.value,
+  (nV) => {
+    if (!nV) {
+      needShowTooltipsRef.value = false;
+    }
+    if (!props.expand) {
+      nextTick(() => {
+        checkOverFlowFn();
+      }).then();
+    }
+  },
+  {
+    immediate: true,
+  },
+);
+onUnmounted(() => {
+  if (resizeObserver && ellipsis.value) {
+    resizeObserver.unobserve(ellipsis.value);
+  }
+});
 </script>
 <template>
   <div>
@@ -104,7 +179,7 @@ function handleExpand() {
         color: tooltipColor,
         backgroundColor: tooltipBackgroundColor,
       }"
-      :disabled="!props.tooltip || isExpand"
+      :disabled="!props.tooltip || isExpand || !needShowTooltipsRef"
       :side="placement"
     >
       <slot name="tooltip">
