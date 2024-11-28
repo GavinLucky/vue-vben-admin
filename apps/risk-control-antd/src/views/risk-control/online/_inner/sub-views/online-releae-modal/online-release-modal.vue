@@ -17,9 +17,9 @@ const { getDiffWithOnlineWordsVersionApiFn, doReleaseVersionApiFn } =
   useOnlineRequest();
 
 const rowRef = ref<Record<any, any> | undefined>(undefined);
-const diffDetailRef = ref<Record<'add' | 'del', string[]>>({
-  add: [],
-  del: [],
+const diffDetailRef = ref<Record<'add' | 'del', string[] | undefined>>({
+  add: undefined,
+  del: undefined,
 });
 const loadDiffDataFn = async () => {
   const [err, resp] = await getDiffWithOnlineWordsVersionApiFn(
@@ -29,7 +29,7 @@ const loadDiffDataFn = async () => {
   if (err) {
     message.error(err.msg || '获取对比数据失败');
   } else {
-    diffDetailRef.value = resp;
+    diffDetailRef.value = resp || { add: [], del: [] };
   }
 };
 
@@ -86,6 +86,7 @@ const [Modal, modalApi] = useVbenModal({
   class: 'w-[65vw]',
   onClosed: () => {
     rowRef.value = undefined;
+    diffDetailRef.value = { add: undefined, del: undefined };
   },
   onCancel() {
     modalApi.close();
@@ -117,9 +118,12 @@ const [Modal, modalApi] = useVbenModal({
       >
         <div class="flex flex-row items-center justify-center">
           <span v-if="diffDetailRef.add?.length > 0">{{
-            diffDetailRef.add.join(',')
+            diffDetailRef.add?.join(',')
           }}</span>
-          <span v-else class="text-[#aaa]">无差异内容</span>
+          <span v-else-if="diffDetailRef.add?.length === 0" class="text-[#aaa]">
+            无差异内容
+          </span>
+          <span v-else></span>
         </div>
       </a-descriptions-item>
       <a-descriptions-item
@@ -132,9 +136,12 @@ const [Modal, modalApi] = useVbenModal({
       >
         <div class="flex flex-row items-center justify-center">
           <span v-if="diffDetailRef.del?.length > 0">{{
-            diffDetailRef.del.join(',') || '暂无差异'
+            diffDetailRef.del?.join(',') || '暂无差异'
           }}</span>
-          <span v-else class="text-[#aaa]">无差异内容</span>
+          <span v-else-if="diffDetailRef.del?.length === 0" class="text-[#aaa]">
+            无差异内容
+          </span>
+          <span v-else></span>
         </div>
       </a-descriptions-item>
     </a-descriptions>
