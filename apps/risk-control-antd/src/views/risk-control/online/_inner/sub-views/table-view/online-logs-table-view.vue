@@ -133,7 +133,10 @@ const [BasicTable, tableApi] = useVbenVxeGrid({
   },
 });
 defineExpose({
-  refeshListFn: () => {
+  refeshListFn: (cleanForm: boolean = false) => {
+    if (cleanForm) {
+      tableApi.formApi.resetForm();
+    }
     tableApi.reload();
   },
 });

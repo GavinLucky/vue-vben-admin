@@ -39,7 +39,7 @@ const onEmitUploadFinishedFn = () => {
 };
 const onEmitWordsTypeChanged = () => {
   activeKey.value = '1';
-  getRefCompFn(uploadedTableRef)?.refeshListFn();
+  getRefCompFn(uploadedTableRef)?.refeshListFn(true);
 };
 // #endregion  -------------------------------------
 
@@ -56,7 +56,7 @@ watch(
   () => activeKey.value,
   (nV) => {
     if (nV === '2') {
-      getRefCompFn(onlineReleasedLogsTableRef)?.refeshListFn();
+      getRefCompFn(onlineReleasedLogsTableRef)?.refeshListFn(true);
     }
   },
 );
