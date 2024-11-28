@@ -104,12 +104,17 @@ const formSchema = computed((): VbenFormSchema[] => {
     },
   ];
 });
+const doLogin = ([err, resp]) => {
+  if (!err) {
+    authStore.authLogin(resp);
+  }
+};
 </script>
 
 <template>
   <AuthenticationLogin
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    @submit="authStore.authLogin"
+    @submit="doLogin"
   />
 </template>

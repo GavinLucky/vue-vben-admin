@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 import { EllipsisText, Page } from '@vben/common-ui';
+import { Copy } from '@vben/icons';
 
 import { Card } from 'ant-design-vue';
 
@@ -36,6 +37,19 @@ const text = ref(longText);
           </div>
         </template>
       </EllipsisText>
+    </Card>
+
+    <Card class="mb-4 w-[700px]" title="flex布局基本使用">
+      <div class="flex w-full flex-row">
+        <div class="flex-1 overflow-x-hidden">
+          <EllipsisText>{{ text }}</EllipsisText>
+        </div>
+        <div class="flex-none">
+          <a-button shape="circle" size="small">
+            <Copy />
+          </a-button>
+        </div>
+      </div>
     </Card>
   </Page>
 </template>
